@@ -28,7 +28,7 @@ public final class HubConnection extends PersistentConnection {
 	}
 
 	public HubProxy createHubProxy(String hubName) {
-		return null;
+		return new HubProxyImpl(this, hubName);
 	}
 
 	public String registerCallback(Callback<HubResponse, Void> callback) {

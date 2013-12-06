@@ -24,9 +24,17 @@ public interface HubProxy {
 	/**
 	 * Executes a method on the server side hub asynchronously.
 	 * 
-	 * @param method The name of the method.
+	 * @param methodName The name of the method.
 	 * @param args The arguments.
 	 * @return A future that represents when invocation returned.
 	 */
-	<T> Future<T> invoke(String method, Object... args);
+	<T> Future<T> invoke(String methodName, Object... args);
+	
+	/**
+	 * Registers an event for the hub.
+	 * 
+	 * @param eventName The name of the event.
+	 * @param listener The hub listener.
+	 */
+	void subscribe(String eventName, HubListener listener);
 }

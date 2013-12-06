@@ -17,19 +17,6 @@
 
 package net.signalr.client.hubs;
 
-import java.util.concurrent.Future;
-
-public final class HubProxyImpl implements HubProxy {
-
-	public HubProxyImpl(HubConnection connection, String hubName) {
-	}
-	
-	public <T> Future<T> invoke(String method, Object... args) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void subscribe(String eventName, HubListener listener) {
-		// TODO Auto-generated method stub
-	}
+public interface HubListener {
+	void onReceived(String data);
 }
