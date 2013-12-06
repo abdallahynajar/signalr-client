@@ -1,3 +1,20 @@
+/*
+ * Copyright © Martin Tamme
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.signalr.client.transports;
 
 import net.signalr.client.serializers.Serializer;
@@ -7,7 +24,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class NegotiationResponseTests {
+public final class NegotiationResponseTests {
 
 	private Serializer _serializer;
 	
@@ -22,6 +39,7 @@ public class NegotiationResponseTests {
 		
 		NegotiationResponse response = _serializer.deserialize(data, NegotiationResponse.class);
 		
+		Assert.assertNotNull(response);
 		Assert.assertEquals("/signalr", response.getUrl());
 		Assert.assertEquals("Z1IuK7USZw4BwrDFbF8S+Hec4Mitkwe0+3N/FEZoQD8yVObSvtFdUfUJhKprVhjfXYlu1OLv2em/zMGN5ZK0Vr5H6ZqTvXaH+7Y8ee7yGjATfvZB", response.getConnectionToken());
 		Assert.assertEquals("0fa8593e-448e-4c98-9b21-2d95dce3adcc", response.getConnectionId());
@@ -38,6 +56,7 @@ public class NegotiationResponseTests {
 		
 		NegotiationResponse response =  _serializer.deserialize(data, NegotiationResponse.class);
 		
+		Assert.assertNotNull(response);
 		Assert.assertEquals("/signalr", response.getUrl());
 		Assert.assertEquals("Z1IuK7USZw4BwrDFbF8S+Hec4Mitkwe0+3N/FEZoQD8yVObSvtFdUfUJhKprVhjfXYlu1OLv2em/zMGN5ZK0Vr5H6ZqTvXaH+7Y8ee7yGjATfvZB", response.getConnectionToken());
 		Assert.assertEquals("0fa8593e-448e-4c98-9b21-2d95dce3adcc", response.getConnectionId());
