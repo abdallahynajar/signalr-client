@@ -19,14 +19,10 @@ package net.signalr.client.hubs;
 
 import java.util.concurrent.Future;
 
-public interface HubProxy {
+public class HubProxyImpl implements HubProxy {
 
-	/**
-	 * Executes a method on the server side hub asynchronously.
-	 * 
-	 * @param method The name of the method.
-	 * @param args The arguments.
-	 * @return A future that represents when invocation returned.
-	 */
-	<T> Future<T> invoke(String method, Object... args);
+	public <T> Future<T> invoke(String method, Object... args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
