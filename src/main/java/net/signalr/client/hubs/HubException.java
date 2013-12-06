@@ -20,7 +20,7 @@ package net.signalr.client.hubs;
 public final class HubException extends RuntimeException {
 
 	/**
-	 * 
+	 * The serial version unique identifier.
 	 */
 	private static final long serialVersionUID = 2962258989233090645L;
 

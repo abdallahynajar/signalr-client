@@ -20,7 +20,7 @@ package net.signalr.client.transports;
 public final class TransportException extends RuntimeException {
 
 	/**
-	 * 
+	 * The serial version unique identifier.
 	 */
 	private static final long serialVersionUID = -5016633109345235457L;
 
