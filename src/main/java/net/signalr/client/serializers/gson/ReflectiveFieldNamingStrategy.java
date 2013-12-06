@@ -15,12 +15,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.serializer.gson;
+package net.signalr.client.serializers.gson;
 
 import java.lang.reflect.Field;
 
-import net.signalr.client.serializer.SerializationException;
-import net.signalr.client.serializer.SerializedName;
+import net.signalr.client.serializers.SerializationException;
+import net.signalr.client.serializers.SerializedName;
 
 import com.google.gson.FieldNamingStrategy;
 

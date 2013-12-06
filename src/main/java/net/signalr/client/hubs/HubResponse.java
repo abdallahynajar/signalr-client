@@ -19,7 +19,7 @@ package net.signalr.client.hubs;
 
 import java.util.Map;
 
-import net.signalr.client.serializer.SerializedName;
+import net.signalr.client.serializers.SerializedName;
 
 public final class HubResponse {
 

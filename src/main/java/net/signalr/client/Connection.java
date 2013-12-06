@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import net.signalr.client.serializer.Serializer;
+import net.signalr.client.serializers.Serializer;
 
 public interface Connection {
 

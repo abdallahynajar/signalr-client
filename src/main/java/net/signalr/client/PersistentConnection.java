@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import net.signalr.client.serializer.Serializer;
+import net.signalr.client.serializers.Serializer;
 import net.signalr.client.transports.NegotiationResponse;
 import net.signalr.client.transports.Transport;
 

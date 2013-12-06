@@ -19,7 +19,7 @@ package net.signalr.client.hubs;
 
 import net.signalr.client.PersistentConnection;
 import net.signalr.client.concurrent.Callback;
-import net.signalr.client.serializer.Serializer;
+import net.signalr.client.serializers.Serializer;
 import net.signalr.client.transports.Transport;
 
 public final class HubConnection extends PersistentConnection {

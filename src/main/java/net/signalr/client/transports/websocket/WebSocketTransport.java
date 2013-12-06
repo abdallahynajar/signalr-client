@@ -31,7 +31,7 @@ import com.ning.http.client.websocket.WebSocketUpgradeHandler;
 import net.signalr.client.Connection;
 import net.signalr.client.concurrent.Callback;
 import net.signalr.client.concurrent.Futures;
-import net.signalr.client.serializer.Serializer;
+import net.signalr.client.serializers.Serializer;
 import net.signalr.client.transports.AbstractTransport;
 import net.signalr.client.transports.NegotiationResponse;
 import net.signalr.client.transports.TransportException;

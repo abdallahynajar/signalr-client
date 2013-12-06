@@ -15,20 +15,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.serializer;
+package net.signalr.client.serializers;
 
-public final class SerializationException extends RuntimeException {
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
 
-	/**
-	 * The serial version unique identifier.
-	 */
-	private static final long serialVersionUID = -4454146458602222646L;
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface SerializedName {
 
-	public SerializationException(String message) {
-		super(message);
-	}
-
-	public SerializationException(Throwable cause) {
-		super(cause);
-	}
+	String value();
 }

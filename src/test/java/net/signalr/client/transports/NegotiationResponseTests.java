@@ -1,7 +1,7 @@
 package net.signalr.client.transports;
 
-import net.signalr.client.serializer.Serializer;
-import net.signalr.client.serializer.gson.GsonSerializer;
+import net.signalr.client.serializers.Serializer;
+import net.signalr.client.serializers.gson.GsonSerializer;
 
 import org.junit.Assert;
 import org.junit.Before;
