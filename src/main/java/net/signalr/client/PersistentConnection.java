@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import net.signalr.client.serializer.Serializer;
 import net.signalr.client.transports.NegotiationResponse;
 import net.signalr.client.transports.Transport;
 
@@ -41,19 +42,26 @@ public class PersistentConnection implements Connection {
 
 	private final Map<String, Collection<String>> _queryParameters;
 
+	private final Serializer _serializer;
+
 	private String _protocol;
 
 	private String _connectionToken;
 
-	public PersistentConnection(String url, Transport transport) {
+	public PersistentConnection(String url, Transport transport, Serializer serializer) {
 		if (url == null)
 			throw new InvalidParameterException("URL must not be null");
 
 		if (transport == null)
 			throw new InvalidParameterException("Transport must not be null");
 
+		if (serializer == null)
+			throw new InvalidParameterException("Serializer must not be null");
+
 		_url = url;
 		_transport = transport;
+		_serializer = serializer;
+
 		_headers = new HashMap<String, Collection<String>>();
 		_queryParameters = new HashMap<String, Collection<String>>();
 
@@ -111,6 +119,10 @@ public class PersistentConnection implements Connection {
 			throw new InvalidParameterException("Connection token must not be null");
 
 		_connectionToken = connectionToken;
+	}
+
+	public Serializer getSerializer() {
+		return _serializer;
 	}
 
 	public Future<?> start(ConnectionListener listener) {

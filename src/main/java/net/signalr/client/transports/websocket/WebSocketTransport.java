@@ -31,6 +31,7 @@ import com.ning.http.client.websocket.WebSocketUpgradeHandler;
 import net.signalr.client.Connection;
 import net.signalr.client.concurrent.Callback;
 import net.signalr.client.concurrent.Futures;
+import net.signalr.client.serializer.Serializer;
 import net.signalr.client.transports.AbstractTransport;
 import net.signalr.client.transports.NegotiationResponse;
 import net.signalr.client.transports.TransportException;
@@ -46,7 +47,7 @@ public final class WebSocketTransport extends AbstractTransport {
 	}
 
 	@Override
-	public Future<NegotiationResponse> negotiate(Connection connection, String connectionData) {
+	public Future<NegotiationResponse> negotiate(final Connection connection, String connectionData) {
 		String url = connection.getUrl();
 		BoundRequestBuilder boundRequestBuilder = _client.prepareGet(url);
 
@@ -68,8 +69,11 @@ public final class WebSocketTransport extends AbstractTransport {
 			Future<Response> response = boundRequestBuilder.execute();
 
 			return Futures.then(response, new Callback<Response, NegotiationResponse>() {
-				public NegotiationResponse invoke(Response value) {
-					return null;
+				public NegotiationResponse invoke(Response response) throws Exception {
+					String data = response.getResponseBody();
+					Serializer serializer = connection.getSerializer();
+
+					return serializer.deserialize(data, NegotiationResponse.class);
 				}
 			});
 
@@ -119,6 +123,5 @@ public final class WebSocketTransport extends AbstractTransport {
 	@Override
 	public void abort(Connection connection, long timeout, String connectionData) {
 		// TODO Auto-generated method stub
-
 	}
 }

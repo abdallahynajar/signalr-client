@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import net.signalr.client.serializer.Serializer;
+
 public interface Connection {
 
 	String getUrl();
@@ -41,6 +43,8 @@ public interface Connection {
 
 	void setConnectionToken(String connectionToken);
 
+	Serializer getSerializer();
+	
 	Future<?> start(ConnectionListener listener);
 
 	void stop();

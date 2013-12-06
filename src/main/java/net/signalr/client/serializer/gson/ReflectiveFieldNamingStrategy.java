@@ -15,28 +15,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.hubs;
+package net.signalr.client.serializer.gson;
 
-import net.signalr.client.PersistentConnection;
-import net.signalr.client.concurrent.Callback;
-import net.signalr.client.serializer.Serializer;
-import net.signalr.client.transports.Transport;
+import java.lang.reflect.Field;
 
-public final class HubConnection extends PersistentConnection {
+import net.signalr.client.serializer.SerializationException;
+import net.signalr.client.serializer.SerializedName;
 
-	public HubConnection(String url, Transport transport, Serializer serializer) {
-		super(url, transport, serializer);
-	}
+import com.google.gson.FieldNamingStrategy;
 
-	public HubProxy createHubProxy(String hubName) {
-		return new HubProxyImpl(this, hubName);
-	}
+public final class ReflectiveFieldNamingStrategy implements FieldNamingStrategy {
 
-	public String registerCallback(Callback<HubResponse, Void> callback) {
-		return null;
-	}
+	public String translateName(Field field) {
+		SerializedName name = field.getAnnotation(SerializedName.class);
 
-	public void removeCallback(String callbackId) {
+		if (name == null)
+			throw new SerializationException("Annotation for serialized name is missing");
 
+		return name.value();
 	}
 }

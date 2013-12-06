@@ -15,28 +15,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.hubs;
+package net.signalr.client.serializer;
 
-import net.signalr.client.PersistentConnection;
-import net.signalr.client.concurrent.Callback;
-import net.signalr.client.serializer.Serializer;
-import net.signalr.client.transports.Transport;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
 
-public final class HubConnection extends PersistentConnection {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface SerializedName {
 
-	public HubConnection(String url, Transport transport, Serializer serializer) {
-		super(url, transport, serializer);
-	}
-
-	public HubProxy createHubProxy(String hubName) {
-		return new HubProxyImpl(this, hubName);
-	}
-
-	public String registerCallback(Callback<HubResponse, Void> callback) {
-		return null;
-	}
-
-	public void removeCallback(String callbackId) {
-
-	}
+	String value();
 }

@@ -17,6 +17,63 @@
 
 package net.signalr.client.transports;
 
-public class NegotiationResponse {
+import net.signalr.client.serializer.SerializedName;
 
+public final class NegotiationResponse {
+
+	@SerializedName("Url")
+	private String _url;
+
+	@SerializedName("ConnectionToken")
+	private String _connectionToken;
+
+	@SerializedName("ConnectionId")
+	private String _connectionId;
+
+	@SerializedName("ProtocolVersion")
+	private String _protocolVersion;
+
+	@SerializedName("TryWebSockets")
+	private boolean _tryWebSockets;
+
+	@SerializedName("KeepAliveTimeout")
+	private Double _keepAliveTimeout;
+
+	@SerializedName("DisconnectTimeout")
+	private double _disconnectTimeout;
+
+	@SerializedName("TransportConnectTimeout")
+	private double _transportConnectTimeout;
+
+	public String getUrl() {
+		return _url;
+	}
+
+	public String getConnectionToken() {
+		return _connectionToken;
+	}
+
+	public String getConnectionId() {
+		return _connectionId;
+	}
+
+	public String getProtocolVersion() {
+		return _protocolVersion;
+	}
+
+	public boolean getTryWebSockets() {
+		return _tryWebSockets;
+	}
+
+	public double getDisconnectTimeout() {
+		return _disconnectTimeout;
+	}
+
+	public Double getKeepAliveTimeout() {
+		return _keepAliveTimeout;
+	}
+
+	public double getTransportConnectTimeout() {
+		return _transportConnectTimeout;
+	}
 }

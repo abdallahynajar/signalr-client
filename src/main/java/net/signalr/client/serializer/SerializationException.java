@@ -15,28 +15,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.hubs;
+package net.signalr.client.serializer;
 
-import net.signalr.client.PersistentConnection;
-import net.signalr.client.concurrent.Callback;
-import net.signalr.client.serializer.Serializer;
-import net.signalr.client.transports.Transport;
+public final class SerializationException extends RuntimeException {
 
-public final class HubConnection extends PersistentConnection {
+	/**
+	 * The serial version unique identifier.
+	 */
+	private static final long serialVersionUID = -4454146458602222646L;
 
-	public HubConnection(String url, Transport transport, Serializer serializer) {
-		super(url, transport, serializer);
+	public SerializationException(String message) {
+		super(message);
 	}
 
-	public HubProxy createHubProxy(String hubName) {
-		return new HubProxyImpl(this, hubName);
-	}
-
-	public String registerCallback(Callback<HubResponse, Void> callback) {
-		return null;
-	}
-
-	public void removeCallback(String callbackId) {
-
+	public SerializationException(Throwable cause) {
+		super(cause);
 	}
 }
