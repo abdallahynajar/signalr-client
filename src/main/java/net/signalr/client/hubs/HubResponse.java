@@ -24,38 +24,45 @@ import net.signalr.client.serialization.Name;
 public final class HubResponse {
 
 	/**
-	 * The callback identifier.
+	 * The changes made the the round tripped state.
+	 */
+	@Name("S")
+	private Map<String, Object> _state;
+
+	/**
+	 * The result of the invocation.
+	 */
+	@Name("R")
+	private Object _result;
+
+	/**
+	 * The ID of the operation.
 	 */
 	@Name("I")
 	private String _id;
 
 	/**
-	 * The return value of the hub
-	 */
-	@Name("R")
-	private String _result;
-
-	/**
-	 * Indicates whether the Error is a <code>HubException</code>.
+	 * Indicates whether the error is a <code>HubException</code>.
 	 */
 	@Name("H")
 	private Boolean _isHubException;
 
 	/**
-	 * The error message returned from the hub invocation.
+	 * The exception that occurs as a result of invoking the hub method.
 	 */
 	@Name("E")
-	private String _errorMessage;
+	private String _error;
 
 	/**
-	 * The error data returned from the hub invocation.
+	 * The stack trace of the exception that occurs as a result of invoking the
+	 * hub method.
+	 */
+	@Name("T")
+	private String _stackTrace;
+
+	/**
+	 * Extra error data contained in the <code>HubException</code>.
 	 */
 	@Name("D")
-	private Object _errorData;
-
-	/**
-	 * The caller state from this hub.
-	 */
-	@Name("S")
-	private Map<String, String> _state;
+	private String _errorData;
 }
