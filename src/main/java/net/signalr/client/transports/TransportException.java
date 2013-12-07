@@ -17,6 +17,11 @@
 
 package net.signalr.client.transports;
 
+/**
+ * Represents a transport exception.
+ * 
+ * @author mtamme
+ */
 public final class TransportException extends RuntimeException {
 
 	/**

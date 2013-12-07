@@ -17,6 +17,11 @@
 
 package net.signalr.client.transports;
 
+/**
+ * Defines a transport listener.
+ * 
+ * @author mtamme
+ */
 public interface TransportListener {
 
 	void onOpen(Transport transport);

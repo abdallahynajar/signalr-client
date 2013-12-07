@@ -18,7 +18,6 @@
 package net.signalr.client.transports.websocket;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -38,12 +37,18 @@ import net.signalr.client.transports.NegotiationResponse;
 import net.signalr.client.transports.TransportException;
 import net.signalr.client.util.URIBuilder;
 
+/**
+ * Represents the WebSocket transport.
+ * 
+ * @author mtamme
+ */
 public final class WebSocketTransport extends AbstractTransport {
-
-	public static final String TRANSPORT = "webSockets";
 
 	private final AsyncHttpClient _client;
 
+	/**
+	 * Initializes a new instance of the <code>WebSocketTransport</code> class.
+	 */
 	public WebSocketTransport() {
 		_client = new AsyncHttpClient();
 	}
@@ -69,7 +74,9 @@ public final class WebSocketTransport extends AbstractTransport {
 		boundRequestBuilder.addQueryParameter("connectionToken", connectionToken);
 		boundRequestBuilder.addQueryParameter("connectionData", connectionData);
 		boundRequestBuilder.addQueryParameter("tid", "7");
-		boundRequestBuilder.addQueryParameter("transport", TRANSPORT);
+		String transport = getName();
+
+		boundRequestBuilder.addQueryParameter("transport", transport);
 
 		try {
 			WebSocketUpgradeHandler.Builder builder = new WebSocketUpgradeHandler.Builder();
@@ -80,6 +87,11 @@ public final class WebSocketTransport extends AbstractTransport {
 		} catch (IOException e) {
 			throw new TransportException(e);
 		}
+	}
+
+	@Override
+	public String getName() {
+		return "webSockets";
 	}
 
 	@Override

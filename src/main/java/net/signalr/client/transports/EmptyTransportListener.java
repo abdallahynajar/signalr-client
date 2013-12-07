@@ -17,7 +17,12 @@
 
 package net.signalr.client.transports;
 
-public final class NullTransportListener implements TransportListener {
+/**
+ * Represents an empty transport listener.
+ * 
+ * @author mtamme
+ */
+public final class EmptyTransportListener implements TransportListener {
 
 	public void onOpen(Transport transport) {
 	}

@@ -18,16 +18,18 @@
 package net.signalr.client.transports;
 
 import java.security.InvalidParameterException;
-import java.util.concurrent.Future;
 
-import net.signalr.client.Connection;
-
+/**
+ * Represents an abstract transport.
+ * 
+ * @author mtamme
+ */
 public abstract class AbstractTransport implements Transport {
 
 	private TransportListener _listener;
 
 	public AbstractTransport() {
-		_listener = new NullTransportListener();
+		_listener = new EmptyTransportListener();
 	}
 
 	public void onOpen() {
@@ -52,12 +54,4 @@ public abstract class AbstractTransport implements Transport {
 
 		_listener = listener;
 	}
-
-	public abstract Future<NegotiationResponse> negotiate(Connection connection, String connectionData);
-
-	public abstract Future<?> start(Connection connection, String connectionData);
-
-	public abstract Future<?> send(Connection connection, String connectionData, String data);
-
-	public abstract void abort(Connection connection, long timeout, String connectionData);
 }

@@ -17,6 +17,11 @@
 
 package net.signalr.client.util;
 
+/**
+ * Represents an URI exception.
+ * 
+ * @author mtamme
+ */
 public final class URIException extends RuntimeException {
 
 	/**

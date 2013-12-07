@@ -19,6 +19,11 @@ package net.signalr.client.transports;
 
 import net.signalr.client.serialization.Name;
 
+/**
+ * Reprsesents a negotiation response.
+ * 
+ * @author mtamme
+ */
 public final class NegotiationResponse {
 
 	@Name("Url")

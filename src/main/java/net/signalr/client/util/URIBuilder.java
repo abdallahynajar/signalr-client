@@ -21,6 +21,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidParameterException;
 
+/**
+ * Represents an URI builder.
+ * 
+ * @author mtamme
+ */
 public final class URIBuilder {
 
 	private String _schema;

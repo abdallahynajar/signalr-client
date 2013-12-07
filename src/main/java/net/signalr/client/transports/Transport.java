@@ -21,8 +21,19 @@ import java.util.concurrent.Future;
 
 import net.signalr.client.Connection;
 
+/**
+ * Defines a transport.
+ * 
+ * @author mtamme
+ */
 public interface Transport {
 
+	/**
+	 * Returns the transport name.
+	 * @return the transport name.
+	 */
+	String getName();
+	
 	void setTransportListener(TransportListener listener);
 
 	Future<NegotiationResponse> negotiate(Connection connection, String connectionData);
