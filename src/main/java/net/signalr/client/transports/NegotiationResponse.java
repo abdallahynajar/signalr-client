@@ -17,32 +17,32 @@
 
 package net.signalr.client.transports;
 
-import net.signalr.client.serializers.SerializedName;
+import net.signalr.client.serialization.Name;
 
 public final class NegotiationResponse {
 
-	@SerializedName("Url")
+	@Name("Url")
 	private String _url;
 
-	@SerializedName("ConnectionToken")
+	@Name("ConnectionToken")
 	private String _connectionToken;
 
-	@SerializedName("ConnectionId")
+	@Name("ConnectionId")
 	private String _connectionId;
 
-	@SerializedName("ProtocolVersion")
+	@Name("ProtocolVersion")
 	private String _protocolVersion;
 
-	@SerializedName("TryWebSockets")
+	@Name("TryWebSockets")
 	private boolean _tryWebSockets;
 
-	@SerializedName("KeepAliveTimeout")
+	@Name("KeepAliveTimeout")
 	private Double _keepAliveTimeout;
 
-	@SerializedName("DisconnectTimeout")
+	@Name("DisconnectTimeout")
 	private double _disconnectTimeout;
 
-	@SerializedName("TransportConnectTimeout")
+	@Name("TransportConnectTimeout")
 	private double _transportConnectTimeout;
 
 	public String getUrl() {

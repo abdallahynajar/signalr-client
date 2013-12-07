@@ -19,43 +19,43 @@ package net.signalr.client.hubs;
 
 import java.util.Map;
 
-import net.signalr.client.serializers.SerializedName;
+import net.signalr.client.serialization.Name;
 
 public final class HubResponse {
 
 	/**
 	 * The callback identifier.
 	 */
-	@SerializedName("I")
+	@Name("I")
 	private String _id;
 
 	/**
 	 * The return value of the hub
 	 */
-	@SerializedName("R")
+	@Name("R")
 	private String _result;
 
 	/**
 	 * Indicates whether the Error is a <code>HubException</code>.
 	 */
-	@SerializedName("H")
+	@Name("H")
 	private Boolean _isHubException;
 
 	/**
 	 * The error message returned from the hub invocation.
 	 */
-	@SerializedName("E")
+	@Name("E")
 	private String _errorMessage;
 
 	/**
 	 * The error data returned from the hub invocation.
 	 */
-	@SerializedName("D")
+	@Name("D")
 	private Object _errorData;
 
 	/**
 	 * The caller state from this hub.
 	 */
-	@SerializedName("S")
+	@Name("S")
 	private Map<String, String> _state;
 }

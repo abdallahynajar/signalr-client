@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.serializers;
+package net.signalr.client.serialization;
 
 public interface Serializer {
 	<T> String serialize(T graph);

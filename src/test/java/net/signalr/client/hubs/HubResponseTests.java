@@ -17,8 +17,8 @@
 
 package net.signalr.client.hubs;
 
-import net.signalr.client.serializers.Serializer;
-import net.signalr.client.serializers.gson.GsonSerializer;
+import net.signalr.client.serialization.Serializer;
+import net.signalr.client.serialization.gson.GsonSerializer;
 
 import org.junit.Assert;
 import org.junit.Before;

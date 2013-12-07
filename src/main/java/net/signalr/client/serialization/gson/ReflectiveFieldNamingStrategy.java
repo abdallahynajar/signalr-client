@@ -15,19 +15,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.serializers.gson;
+package net.signalr.client.serialization.gson;
 
 import java.lang.reflect.Field;
 
-import net.signalr.client.serializers.SerializationException;
-import net.signalr.client.serializers.SerializedName;
+import net.signalr.client.serialization.SerializationException;
+import net.signalr.client.serialization.Name;
 
 import com.google.gson.FieldNamingStrategy;
 
 public final class ReflectiveFieldNamingStrategy implements FieldNamingStrategy {
 
 	public String translateName(Field field) {
-		SerializedName name = field.getAnnotation(SerializedName.class);
+		Name name = field.getAnnotation(Name.class);
 
 		if (name == null)
 			throw new SerializationException("Annotation for serialized name is missing");
