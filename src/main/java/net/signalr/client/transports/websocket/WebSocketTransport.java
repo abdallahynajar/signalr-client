@@ -49,7 +49,7 @@ public final class WebSocketTransport extends AbstractTransport {
 	@Override
 	public Future<NegotiationResponse> negotiate(final Connection connection, String connectionData) {
 		String url = connection.getUrl();
-		BoundRequestBuilder boundRequestBuilder = _client.prepareGet(url);
+		BoundRequestBuilder boundRequestBuilder = _client.prepareGet(url + "negotiate");
 
 		// Add headers.
 		Map<String, Collection<String>> headers = connection.getHeaders();
@@ -66,11 +66,18 @@ public final class WebSocketTransport extends AbstractTransport {
 		boundRequestBuilder.addQueryParameter("connectionData", connectionData);
 
 		try {
-			Future<Response> response = boundRequestBuilder.execute();
+			Future<Response> negotiate = boundRequestBuilder.execute();
 
-			return Futures.then(response, new Function<Response, NegotiationResponse>() {
-				public NegotiationResponse invoke(Response response) throws Exception {
-					String data = response.getResponseBody();
+			return Futures.then(negotiate, new Function<Response, NegotiationResponse>() {
+				@Override
+				public NegotiationResponse invoke(Response response) {
+					String data;
+					
+					try {
+						data = response.getResponseBody();
+					} catch (IOException e) {
+						throw new TransportException(e);
+					}
 					Serializer serializer = connection.getSerializer();
 
 					return serializer.deserialize(data, NegotiationResponse.class);
@@ -85,7 +92,7 @@ public final class WebSocketTransport extends AbstractTransport {
 	@Override
 	public Future<?> start(Connection connection, String connectionData) {
 		String url = connection.getUrl();
-		BoundRequestBuilder boundRequestBuilder = _client.prepareGet(url);
+		BoundRequestBuilder boundRequestBuilder = _client.prepareGet(url + "connect");
 
 		// Add headers.
 		Map<String, Collection<String>> headers = connection.getHeaders();
@@ -100,14 +107,14 @@ public final class WebSocketTransport extends AbstractTransport {
 
 		boundRequestBuilder.addQueryParameter("connectionToken", connectionToken);
 		boundRequestBuilder.addQueryParameter("connectionData", connectionData);
-		boundRequestBuilder.addQueryParameter("tid", null);
+		boundRequestBuilder.addQueryParameter("tid", "7");
 		boundRequestBuilder.addQueryParameter("transport", TRANSPORT);
 
 		try {
 			WebSocketUpgradeHandler.Builder builder = new WebSocketUpgradeHandler.Builder();
 
 			builder.addWebSocketListener(new WebSocketTextListenerAdapter(this));
-
+			
 			return boundRequestBuilder.execute(builder.build());
 		} catch (IOException e) {
 			throw new TransportException(e);

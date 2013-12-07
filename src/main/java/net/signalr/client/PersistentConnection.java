@@ -80,8 +80,10 @@ public class PersistentConnection implements Connection {
 	public void addHeader(String name, String value) {
 		Collection<String> values = _headers.get(name);
 
-		if (values == null)
+		if (values == null) {
 			values = new ArrayList<String>();
+			_headers.put(name, values);
+		}
 
 		values.add(value);
 	}
@@ -93,8 +95,10 @@ public class PersistentConnection implements Connection {
 	public void addQueryParameter(String name, String value) {
 		Collection<String> values = _queryParameters.get(name);
 
-		if (values == null)
+		if (values == null) {
 			values = new ArrayList<String>();
+			_queryParameters.put(name, values);
+		}
 
 		values.add(value);
 	}
@@ -128,7 +132,7 @@ public class PersistentConnection implements Connection {
 	public Future<?> start(ConnectionListener listener) {
 		String connectionData = null;
 		Future<NegotiationResponse> negotiate = _transport.negotiate(this, connectionData);
-
+		
 		return _transport.start(this, connectionData);
 	}
 

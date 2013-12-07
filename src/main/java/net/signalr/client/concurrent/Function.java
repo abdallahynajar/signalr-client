@@ -18,5 +18,5 @@
 package net.signalr.client.concurrent;
 
 public interface Function<I, O> {
-	O invoke(I input) throws Exception;
+	O invoke(I input);
 }

@@ -17,19 +17,41 @@
 
 package net.signalr.client.concurrent;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
-public final class Futures {
+public class ImmediateFuture<V> implements Future<V> {
 
-	public static Future<?> empty() {
-		return immediate(null);
+	private final V _value;
+
+	public ImmediateFuture(V value) {
+		_value = value;
 	}
 
-	public static <V> Future<V> immediate(V value) {
-		return new ImmediateFuture<V>(value);
+	@Override
+	public boolean cancel(boolean mayInterruptIfRunning) {
+		return false;
 	}
 
-	public static <I, O> Future<O> then(final Future<I> future, final Function<? super I, ? extends O> function) {
-		return new ChainingFuture<I, O>(future, function);
+	@Override
+	public boolean isCancelled() {
+		return false;
+	}
+
+	@Override
+	public boolean isDone() {
+		return true;
+	}
+
+	@Override
+	public V get() throws InterruptedException, ExecutionException {
+		return _value;
+	}
+
+	@Override
+	public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+		return _value;
 	}
 }
