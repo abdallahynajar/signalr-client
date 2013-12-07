@@ -23,13 +23,13 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public final class ChainingFuture<I, O> implements Future<O> {
+public final class ContinuationFuture<I, O> implements Future<O> {
 
 	private final Future<I> _future;
 
 	private final Function<? super I, ? extends O> _function;
 
-	public ChainingFuture(Future<I> future, Function<? super I, ? extends O> function) {
+	public ContinuationFuture(Future<I> future, Function<? super I, ? extends O> function) {
 		if (future == null)
 			throw new InvalidParameterException("Future must not be null");
 

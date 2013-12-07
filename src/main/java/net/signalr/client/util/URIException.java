@@ -15,21 +15,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.concurrent;
+package net.signalr.client.util;
 
-import java.util.concurrent.Future;
+public final class URIException extends RuntimeException {
 
-public final class Futures {
+	/**
+	 * The serial version unique identifier.
+	 */
+	private static final long serialVersionUID = 4177222748879553738L;
 
-	public static Future<?> empty() {
-		return immediate(null);
-	}
-
-	public static <V> Future<V> immediate(V value) {
-		return new ImmediateFuture<V>(value);
-	}
-
-	public static <I, O> Future<O> continueWith(final Future<I> future, final Function<? super I, ? extends O> function) {
-		return new ContinuationFuture<I, O>(future, function);
+	public URIException(Throwable cause) {
+		super(cause);
 	}
 }

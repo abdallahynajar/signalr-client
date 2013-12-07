@@ -18,6 +18,7 @@
 package net.signalr.client.transports.websocket;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -35,6 +36,7 @@ import net.signalr.client.serialization.Serializer;
 import net.signalr.client.transports.AbstractTransport;
 import net.signalr.client.transports.NegotiationResponse;
 import net.signalr.client.transports.TransportException;
+import net.signalr.client.util.URIBuilder;
 
 public final class WebSocketTransport extends AbstractTransport {
 
@@ -46,53 +48,12 @@ public final class WebSocketTransport extends AbstractTransport {
 		_client = new AsyncHttpClient();
 	}
 
-	@Override
-	public Future<NegotiationResponse> negotiate(final Connection connection, String connectionData) {
-		String url = connection.getUrl();
-		BoundRequestBuilder boundRequestBuilder = _client.prepareGet(url + "negotiate");
+	private Future<?> connect(Connection connection, String connectionData, boolean reconnect) {
+		URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), reconnect ? "reconnect" : "connect");
+		String schema = uriBuilder.getSchema().equals("https") ? "wss" : "ws";
 
-		// Add headers.
-		Map<String, Collection<String>> headers = connection.getHeaders();
-
-		boundRequestBuilder.setHeaders(headers);
-
-		// Add query parameters.
-		Map<String, Collection<String>> parameters = connection.getQueryParameters();
-
-		boundRequestBuilder.setQueryParameters(new FluentStringsMap(parameters));
-		String protocol = connection.getProtocol();
-
-		boundRequestBuilder.addQueryParameter("clientProtocol", protocol);
-		boundRequestBuilder.addQueryParameter("connectionData", connectionData);
-
-		try {
-			Future<Response> negotiate = boundRequestBuilder.execute();
-
-			return Futures.then(negotiate, new Function<Response, NegotiationResponse>() {
-				@Override
-				public NegotiationResponse invoke(Response response) {
-					String data;
-					
-					try {
-						data = response.getResponseBody();
-					} catch (IOException e) {
-						throw new TransportException(e);
-					}
-					Serializer serializer = connection.getSerializer();
-
-					return serializer.deserialize(data, NegotiationResponse.class);
-				}
-			});
-
-		} catch (IOException e) {
-			throw new TransportException(e);
-		}
-	}
-
-	@Override
-	public Future<?> start(Connection connection, String connectionData) {
-		String url = connection.getUrl();
-		BoundRequestBuilder boundRequestBuilder = _client.prepareGet(url + "connect");
+		uriBuilder.setSchema(schema);
+		BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
 
 		// Add headers.
 		Map<String, Collection<String>> headers = connection.getHeaders();
@@ -114,11 +75,59 @@ public final class WebSocketTransport extends AbstractTransport {
 			WebSocketUpgradeHandler.Builder builder = new WebSocketUpgradeHandler.Builder();
 
 			builder.addWebSocketListener(new WebSocketTextListenerAdapter(this));
-			
+
 			return boundRequestBuilder.execute(builder.build());
 		} catch (IOException e) {
 			throw new TransportException(e);
 		}
+	}
+
+	@Override
+	public Future<NegotiationResponse> negotiate(final Connection connection, String connectionData) {
+		URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "negotiate");
+		BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
+
+		// Add headers.
+		Map<String, Collection<String>> headers = connection.getHeaders();
+
+		boundRequestBuilder.setHeaders(headers);
+
+		// Add query parameters.
+		Map<String, Collection<String>> parameters = connection.getQueryParameters();
+
+		boundRequestBuilder.setQueryParameters(new FluentStringsMap(parameters));
+		String protocol = connection.getProtocol();
+
+		boundRequestBuilder.addQueryParameter("clientProtocol", protocol);
+		boundRequestBuilder.addQueryParameter("connectionData", connectionData);
+
+		try {
+			Future<Response> negotiate = boundRequestBuilder.execute();
+
+			return Futures.continueWith(negotiate, new Function<Response, NegotiationResponse>() {
+				@Override
+				public NegotiationResponse invoke(Response response) {
+					String data;
+
+					try {
+						data = response.getResponseBody();
+					} catch (IOException e) {
+						throw new TransportException(e);
+					}
+					Serializer serializer = connection.getSerializer();
+
+					return serializer.deserialize(data, NegotiationResponse.class);
+				}
+			});
+
+		} catch (IOException e) {
+			throw new TransportException(e);
+		}
+	}
+
+	@Override
+	public Future<?> start(Connection connection, String connectionData) {
+		return connect(connection, connectionData, false);
 	}
 
 	@Override
