@@ -17,14 +17,16 @@
 
 package net.signalr.client.concurrent;
 
+import java.util.concurrent.Future;
+
 /**
- * Defines a function.
+ * Defines an asynchronous function.
  * 
  * @author mtamme
- *
- * @param <I> The input type.
- * @param <O> The output type.
+ * 
+ * @param <I> the input type.
+ * @param <O> the output type.
  */
-public interface Function<I, O> {
-	O invoke(I input);
+public interface AsyncFunction<I, O> {
+	Future<O> invoke(I input);
 }

@@ -32,4 +32,9 @@ public final class Futures {
 	public static <I, O> Future<O> continueWith(final Future<I> future, final Function<? super I, ? extends O> function) {
 		return new ContinuationFuture<I, O>(future, function);
 	}
+
+	public static <I, O> Future<O> continueWith(final Future<I> future, final AsyncFunction<? super I, ? extends O> function) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

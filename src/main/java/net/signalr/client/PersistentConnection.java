@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import net.signalr.client.concurrent.Function;
+import net.signalr.client.concurrent.Futures;
 import net.signalr.client.serialization.Serializer;
 import net.signalr.client.transports.NegotiationResponse;
 import net.signalr.client.transports.Transport;
@@ -46,7 +48,13 @@ public class PersistentConnection implements Connection {
 
 	private String _protocol;
 
+	private String _connectionId;
+	
 	private String _connectionToken;
+	
+	private String _connectionData;
+	
+	private double _disconnectTimeout;
 
 	public PersistentConnection(String url, Transport transport, Serializer serializer) {
 		if (url == null)
@@ -66,7 +74,10 @@ public class PersistentConnection implements Connection {
 		_queryParameters = new HashMap<String, Collection<String>>();
 
 		_protocol = PROTOCOL;
-		_connectionToken = "";
+		_connectionId = null;
+		_connectionToken = null;
+		_connectionData = null;
+		_disconnectTimeout = 0.0;
 	}
 
 	public String getUrl() {
@@ -124,16 +135,38 @@ public class PersistentConnection implements Connection {
 
 		_connectionToken = connectionToken;
 	}
+	
+	public String getConnectionData() {
+		return _connectionData;
+	}
+
+	public void setConnectionData(String connectionData) {
+		if (connectionData == null)
+			throw new InvalidParameterException("Connection data must not be null");
+
+		_connectionData = connectionData;
+	}
 
 	public Serializer getSerializer() {
 		return _serializer;
 	}
 
 	public Future<?> start(ConnectionListener listener) {
-		String connectionData = null;
+		final String connectionData = null;
 		Future<NegotiationResponse> negotiate = _transport.negotiate(this, connectionData);
 		
-		return _transport.start(this, connectionData);
+		return Futures.continueWith(negotiate, new Function<NegotiationResponse, Void>() {
+			@Override
+			public Void invoke(NegotiationResponse negotiationResponse) {
+				_connectionId = negotiationResponse.getConnectionId();
+				_connectionToken = negotiationResponse.getConnectionToken();
+				_disconnectTimeout = negotiationResponse.getDisconnectTimeout();
+				
+				_transport.start(PersistentConnection.this, connectionData);
+				
+				return null;
+			}
+		});
 	}
 
 	public void stop() {
