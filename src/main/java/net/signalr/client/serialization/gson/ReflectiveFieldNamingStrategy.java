@@ -30,7 +30,7 @@ public final class ReflectiveFieldNamingStrategy implements FieldNamingStrategy 
 		Name name = field.getAnnotation(Name.class);
 
 		if (name == null)
-			throw new SerializationException("Annotation for serialized name is missing");
+			throw new SerializationException("Name annotation is missing");
 
 		return name.value();
 	}
