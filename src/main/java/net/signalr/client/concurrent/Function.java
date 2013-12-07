@@ -15,30 +15,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.hubs;
+package net.signalr.client.concurrent;
 
-import net.signalr.client.serializers.Serializer;
-import net.signalr.client.serializers.gson.GsonSerializer;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-public final class HubResponseTests {
-
-	private Serializer _serializer;
-
-	@Before
-	public void setUp() {
-		_serializer = new GsonSerializer();
-	}
-
-	@Test
-	public void deserializeTest() {
-		String data = "";
-
-		HubResponse response = _serializer.deserialize(data, HubResponse.class);
-
-		Assert.assertNotNull(response);
-	}
+public interface Function<I, O> {
+	O invoke(I input) throws Exception;
 }

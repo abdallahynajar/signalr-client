@@ -1,5 +1,5 @@
 /*
- * Copyright © Martin Tamme
+ * Copyright Â© Martin Tamme
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -29,7 +29,7 @@ import com.ning.http.client.Response;
 import com.ning.http.client.websocket.WebSocketUpgradeHandler;
 
 import net.signalr.client.Connection;
-import net.signalr.client.concurrent.Callback;
+import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Futures;
 import net.signalr.client.serializers.Serializer;
 import net.signalr.client.transports.AbstractTransport;
@@ -68,7 +68,7 @@ public final class WebSocketTransport extends AbstractTransport {
 		try {
 			Future<Response> response = boundRequestBuilder.execute();
 
-			return Futures.then(response, new Callback<Response, NegotiationResponse>() {
+			return Futures.then(response, new Function<Response, NegotiationResponse>() {
 				public NegotiationResponse invoke(Response response) throws Exception {
 					String data = response.getResponseBody();
 					Serializer serializer = connection.getSerializer();

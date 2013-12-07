@@ -1,5 +1,5 @@
 /*
- * Copyright © Martin Tamme
+ * Copyright Â© Martin Tamme
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@ public final class HubProxyImpl implements HubProxy {
 
 	public HubProxyImpl(HubConnection connection, String hubName) {
 	}
-	
+
 	public <T> Future<T> invoke(String method, Object... args) {
 		// TODO Auto-generated method stub
 		return null;

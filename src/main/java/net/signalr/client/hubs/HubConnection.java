@@ -1,5 +1,5 @@
 /*
- * Copyright © Martin Tamme
+ * Copyright Â© Martin Tamme
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,7 @@
 package net.signalr.client.hubs;
 
 import net.signalr.client.PersistentConnection;
-import net.signalr.client.concurrent.Callback;
+import net.signalr.client.concurrent.Function;
 import net.signalr.client.serializers.Serializer;
 import net.signalr.client.transports.Transport;
 
@@ -32,7 +32,7 @@ public final class HubConnection extends PersistentConnection {
 		return new HubProxyImpl(this, hubName);
 	}
 
-	public String registerCallback(Callback<HubResponse, Void> callback) {
+	public String registerCallback(Function<HubResponse, Void> callback) {
 		return null;
 	}
 

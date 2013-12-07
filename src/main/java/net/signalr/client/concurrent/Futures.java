@@ -1,5 +1,5 @@
 /*
- * Copyright © Martin Tamme
+ * Copyright Â© Martin Tamme
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -23,13 +23,12 @@ import java.util.concurrent.FutureTask;
 
 public final class Futures {
 
-	public static <S, R> Future<R> then(final Future<S> future, final Callback<S, R> successor) {
+	public static <I, O> Future<O> then(final Future<I> future, final Function<? super I, ? extends O> function) {
+		return new FutureTask<O>(new Callable<O>() {
+			public O call() throws Exception {
+				I input = future.get();
 
-		return new FutureTask<R>(new Callable<R>() {
-			public R call() throws Exception {
-				S result = future.get();
-
-				return successor.invoke(result);
+				return function.invoke(input);
 			}
 		});
 	}

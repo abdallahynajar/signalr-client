@@ -1,5 +1,5 @@
 /*
- * Copyright © Martin Tamme
+ * Copyright Â© Martin Tamme
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -24,17 +24,21 @@ public interface HubProxy {
 	/**
 	 * Executes a method on the server side hub asynchronously.
 	 * 
-	 * @param methodName The name of the method.
-	 * @param args The arguments.
+	 * @param methodName
+	 *            The name of the method.
+	 * @param args
+	 *            The arguments.
 	 * @return A future that represents when invocation returned.
 	 */
 	<T> Future<T> invoke(String methodName, Object... args);
-	
+
 	/**
 	 * Registers an event for the hub.
 	 * 
-	 * @param eventName The name of the event.
-	 * @param listener The hub listener.
+	 * @param eventName
+	 *            The name of the event.
+	 * @param listener
+	 *            The hub listener.
 	 */
 	void subscribe(String eventName, HubListener listener);
 }
