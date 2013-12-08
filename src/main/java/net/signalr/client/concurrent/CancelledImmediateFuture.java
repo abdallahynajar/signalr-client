@@ -19,11 +19,8 @@ package net.signalr.client.concurrent;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
-public final class CancelledImmediateFuture<V> implements Future<V> {
+public final class CancelledImmediateFuture<V> extends AbstractImmediateFuture<V> {
 
 	@Override
 	public boolean cancel(final boolean mayInterruptIfRunning) {
@@ -36,17 +33,7 @@ public final class CancelledImmediateFuture<V> implements Future<V> {
 	}
 
 	@Override
-	public boolean isDone() {
-		return false;
-	}
-
-	@Override
 	public V get() throws InterruptedException, ExecutionException {
-		throw new CancellationException();
-	}
-
-	@Override
-	public V get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 		throw new CancellationException();
 	}
 }

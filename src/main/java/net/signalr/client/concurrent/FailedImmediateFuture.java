@@ -19,11 +19,8 @@ package net.signalr.client.concurrent;
 
 import java.security.InvalidParameterException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
-public final class FailedImmediateFuture<V> implements Future<V> {
+public final class FailedImmediateFuture<V> extends AbstractImmediateFuture<V> {
 
 	private final Throwable _cause;
 
@@ -35,27 +32,7 @@ public final class FailedImmediateFuture<V> implements Future<V> {
 	}
 
 	@Override
-	public boolean cancel(final boolean mayInterruptIfRunning) {
-		return false;
-	}
-
-	@Override
-	public boolean isCancelled() {
-		return false;
-	}
-
-	@Override
-	public boolean isDone() {
-		return false;
-	}
-
-	@Override
 	public V get() throws InterruptedException, ExecutionException {
-		throw new ExecutionException(_cause);
-	}
-
-	@Override
-	public V get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 		throw new ExecutionException(_cause);
 	}
 }
