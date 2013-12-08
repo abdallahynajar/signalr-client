@@ -17,9 +17,6 @@
 
 package net.signalr.client.json;
 
-public interface JsonSerializable {
-
-	void readJson(JsonReader reader);
-
+public interface JsonWriteable {
 	void writeJson(JsonWriter writer);
 }

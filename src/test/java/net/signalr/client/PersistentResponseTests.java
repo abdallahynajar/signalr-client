@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.hubs;
+package net.signalr.client;
 
 import net.signalr.client.serialization.Serializer;
 import net.signalr.client.serialization.gson.GsonSerializer;
@@ -24,7 +24,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public final class HubResponseTests {
+public final class PersistentResponseTests {
 
 	private Serializer _serializer;
 
@@ -34,22 +34,26 @@ public final class HubResponseTests {
 	}
 
 	@Test
-	public void deserializeCallbackIdResponseTest() {
-		String data = "{\"I\":\"1\"}";
+	public void deserializeInitializationResponseTest() {
+		String data = "{\"C\":\"s-0,298F386\",\"S\":1,\"M\":[]}";
 
-		HubResponse response = _serializer.deserialize(data, HubResponse.class);
+		PersistentResponse response = _serializer.deserialize(data, PersistentResponse.class);
 
 		Assert.assertNotNull(response);
-		Assert.assertEquals("1", response.getCallbackId());
+		Assert.assertEquals("s-0,298F386", response.getMessageId());
+		Assert.assertEquals(true, response.isInitialize());
 	}
 
 	@Test
-	public void deserializeMessageResponseTest() {
-		String data = "{\"C\":\"s-0,298F690\",\"M\":[]}";
+	public void deserializeGroupTokenResponseTest() {
+		String data = "{\"C\":\"s-0,298F388\",\"G\":\"jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=\",\"M\":[]}";
 
-		HubResponse response = _serializer.deserialize(data, HubResponse.class);
+		PersistentResponse response = _serializer.deserialize(data, PersistentResponse.class);
 
 		Assert.assertNotNull(response);
-		Assert.assertEquals("s-0,298F690", response.getMessageId());
+		Assert.assertEquals("s-0,298F388", response.getMessageId());
+		Assert.assertEquals(false, response.isInitialize());
+		Assert.assertEquals("jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=",
+				response.getGroupsToken());
 	}
 }

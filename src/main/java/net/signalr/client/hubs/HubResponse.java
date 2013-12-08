@@ -65,4 +65,15 @@ public final class HubResponse {
 	 */
 	@Name("D")
 	private String _errorData;
+	
+	@Name("C")
+	private String _messageId;
+	
+	public String getCallbackId() {
+		return _callbackId;
+	}
+	
+	public String getMessageId() {
+		return _messageId;
+	}
 }
