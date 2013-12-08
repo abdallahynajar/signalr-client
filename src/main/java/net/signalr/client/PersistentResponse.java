@@ -25,13 +25,13 @@ public class PersistentResponse {
 	private String _messageId;
 
 	@Name("S")
-	private int _initialize;
+	private Integer _initialize;
 
 	@Name("D")
-	private int _disconnect;
+	private Integer _disconnect;
 
 	@Name("T")
-	private int _reconnect;
+	private Integer _reconnect;
 
 	@Name("G")
 	private String _groupsToken;
@@ -41,23 +41,23 @@ public class PersistentResponse {
 
 	@Name("M")
 	private Object[] _messages;
-	
+
 	public String getMessageId() {
 		return _messageId;
 	}
-	
+
 	public boolean isInitialize() {
 		return (_initialize == 1);
 	}
-	
+
 	public boolean isDisconnect() {
 		return (_disconnect == 1);
 	}
-	
+
 	public boolean isReconnect() {
 		return (_reconnect == 1);
 	}
-	
+
 	public String getGroupsToken() {
 		return _groupsToken;
 	}
