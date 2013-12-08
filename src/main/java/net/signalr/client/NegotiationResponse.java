@@ -20,7 +20,7 @@ package net.signalr.client;
 import net.signalr.client.serialization.Name;
 
 /**
- * Reprsesents a negotiation response.
+ * Represents a negotiation response.
  * 
  * @author mtamme
  */
