@@ -28,7 +28,7 @@ public interface TransportListener {
 
 	void onClose(Transport transport);
 
-	void onMessage(String message);
+	void onMessage(Transport transport, String message);
 
 	void onError(Transport transport, Throwable throwable);
 }

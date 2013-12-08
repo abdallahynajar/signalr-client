@@ -17,6 +17,7 @@
 
 package net.signalr.client.transports;
 
+import net.signalr.client.NegotiationResponse;
 import net.signalr.client.serialization.Serializer;
 import net.signalr.client.serialization.gson.GsonSerializer;
 

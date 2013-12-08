@@ -27,7 +27,6 @@ import java.util.concurrent.Future;
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Futures;
 import net.signalr.client.serialization.Serializer;
-import net.signalr.client.transports.NegotiationResponse;
 import net.signalr.client.transports.Transport;
 
 public class PersistentConnection implements Connection {
@@ -153,11 +152,14 @@ public class PersistentConnection implements Connection {
 
 	public Future<?> start(ConnectionListener listener) {
 		final String connectionData = null;
-		Future<NegotiationResponse> negotiate = _transport.negotiate(this, connectionData);
+		Future<String> negotiate = _transport.negotiate(this, connectionData);
 		
-		return Futures.continueWith(negotiate, new Function<NegotiationResponse, Void>() {
+		return Futures.continueWith(negotiate, new Function<String, Void>() {
 			@Override
-			public Void invoke(NegotiationResponse negotiationResponse) {
+			public Void invoke(String data) {
+				Serializer serializer = PersistentConnection.this.getSerializer();
+				NegotiationResponse negotiationResponse = serializer.deserialize(data, NegotiationResponse.class);
+				
 				_connectionId = negotiationResponse.getConnectionId();
 				_connectionToken = negotiationResponse.getConnectionToken();
 				_disconnectTimeout = negotiationResponse.getDisconnectTimeout();
@@ -170,14 +172,10 @@ public class PersistentConnection implements Connection {
 	}
 
 	public void stop() {
-		String connectionData = null;
-
-		_transport.abort(this, DEFAULT_ABORT_TIMEOUT, connectionData);
+		_transport.abort(this, DEFAULT_ABORT_TIMEOUT, _connectionData);
 	}
 
 	public Future<?> send(String data) {
-		String connectionData = null;
-
-		return _transport.send(this, connectionData, data);
+		return _transport.send(this, _connectionData, data);
 	}
 }

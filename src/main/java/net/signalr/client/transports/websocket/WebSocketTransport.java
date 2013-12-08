@@ -29,11 +29,11 @@ import com.ning.http.client.Response;
 import com.ning.http.client.websocket.WebSocketUpgradeHandler;
 
 import net.signalr.client.Connection;
+import net.signalr.client.NegotiationResponse;
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Futures;
 import net.signalr.client.serialization.Serializer;
 import net.signalr.client.transports.AbstractTransport;
-import net.signalr.client.transports.NegotiationResponse;
 import net.signalr.client.transports.TransportException;
 import net.signalr.client.util.URIBuilder;
 
@@ -94,7 +94,7 @@ public final class WebSocketTransport extends AbstractTransport {
 	}
 
 	@Override
-	public Future<NegotiationResponse> negotiate(final Connection connection, String connectionData) {
+	public Future<String> negotiate(final Connection connection, String connectionData) {
 		URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "negotiate");
 		BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
 
@@ -115,19 +115,19 @@ public final class WebSocketTransport extends AbstractTransport {
 		try {
 			Future<Response> negotiate = boundRequestBuilder.execute();
 
-			return Futures.continueWith(negotiate, new Function<Response, NegotiationResponse>() {
+			return Futures.continueWith(negotiate, new Function<Response, String>() {
 				@Override
-				public NegotiationResponse invoke(Response response) {
-					String data;
-
+				public String invoke(Response response) {
+					int statusCode = response.getStatusCode();
+					
+					if (statusCode != 200)
+						throw new TransportException("Negotiate failed: " + statusCode + " " + response.getStatusText());
+					
 					try {
-						data = response.getResponseBody();
+						return response.getResponseBody();
 					} catch (IOException e) {
 						throw new TransportException(e);
 					}
-					Serializer serializer = connection.getSerializer();
-
-					return serializer.deserialize(data, NegotiationResponse.class);
 				}
 			});
 

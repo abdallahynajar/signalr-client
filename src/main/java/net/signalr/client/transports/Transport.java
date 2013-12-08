@@ -30,13 +30,16 @@ public interface Transport {
 
 	/**
 	 * Returns the transport name.
+	 * 
 	 * @return the transport name.
 	 */
 	String getName();
-	
-	void setTransportListener(TransportListener listener);
 
-	Future<NegotiationResponse> negotiate(Connection connection, String connectionData);
+	void addTransportListener(TransportListener listener);
+
+	void removeTransportListener(TransportListener listener);
+
+	Future<String> negotiate(Connection connection, String connectionData);
 
 	Future<?> start(Connection connection, String connectionData);
 

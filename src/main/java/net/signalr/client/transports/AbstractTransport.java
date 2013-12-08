@@ -18,6 +18,7 @@
 package net.signalr.client.transports;
 
 import java.security.InvalidParameterException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Represents an abstract transport.
@@ -26,32 +27,47 @@ import java.security.InvalidParameterException;
  */
 public abstract class AbstractTransport implements Transport {
 
-	private TransportListener _listener;
+	private CopyOnWriteArrayList<TransportListener> _listeners;
 
 	public AbstractTransport() {
-		_listener = new EmptyTransportListener();
+		_listeners = new CopyOnWriteArrayList<TransportListener>();
 	}
 
-	public void onOpen() {
-		_listener.onOpen(this);
-	}
-
-	public void onClose() {
-		_listener.onClose(this);
-	}
-
-	public void onMessage(String message) {
-		_listener.onMessage(message);
-	}
-
-	public void onError(Throwable throwable) {
-		_listener.onError(this, throwable);
-	}
-
-	public void setTransportListener(TransportListener listener) {
+	public void addTransportListener(TransportListener listener) {
 		if (listener == null)
 			throw new InvalidParameterException("Listener must not be null");
 
-		_listener = listener;
+		_listeners.add(listener);
+	}
+
+	public void removeTransportListener(TransportListener listener) {
+		if (listener == null)
+			throw new InvalidParameterException("Listener must not be null");
+
+		_listeners.remove(listener);
+	}
+
+	public void onOpen() {
+		for (TransportListener listener : _listeners) {
+			listener.onOpen(this);
+		}
+	}
+
+	public void onClose() {
+		for (TransportListener listener : _listeners) {
+			listener.onClose(this);
+		}
+	}
+
+	public void onMessage(String message) {
+		for (TransportListener listener : _listeners) {
+			listener.onMessage(this, message);
+		}
+	}
+
+	public void onError(Throwable throwable) {
+		for (TransportListener listener : _listeners) {
+			listener.onError(this, throwable);
+		}
 	}
 }

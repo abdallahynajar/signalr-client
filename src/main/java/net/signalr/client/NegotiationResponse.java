@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.transports;
+package net.signalr.client;
 
 import net.signalr.client.serialization.Name;
 
