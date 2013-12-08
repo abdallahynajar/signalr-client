@@ -15,16 +15,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client;
+package net.signalr.client.json;
 
-public class ConnectionException extends RuntimeException {
+public interface JsonSerializable {
 
-	/**
-	 * The serial version unique identifier.
-	 */
-	private static final long serialVersionUID = 893447697043309452L;
+	void readJson(JsonReader reader);
 
-	public ConnectionException(final Throwable cause) {
-		super(cause);
-	}
+	void writeJson(JsonWriter writer);
 }

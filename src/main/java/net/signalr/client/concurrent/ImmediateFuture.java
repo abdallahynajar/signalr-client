@@ -26,12 +26,12 @@ public class ImmediateFuture<V> implements Future<V> {
 
 	private final V _value;
 
-	public ImmediateFuture(V value) {
+	public ImmediateFuture(final V value) {
 		_value = value;
 	}
 
 	@Override
-	public boolean cancel(boolean mayInterruptIfRunning) {
+	public boolean cancel(final boolean mayInterruptIfRunning) {
 		return false;
 	}
 
@@ -51,7 +51,7 @@ public class ImmediateFuture<V> implements Future<V> {
 	}
 
 	@Override
-	public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+	public V get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 		return _value;
 	}
 }

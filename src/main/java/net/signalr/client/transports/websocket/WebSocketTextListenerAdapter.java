@@ -26,29 +26,29 @@ public final class WebSocketTextListenerAdapter implements WebSocketTextListener
 
 	private final WebSocketTransport _transport;
 
-	public WebSocketTextListenerAdapter(WebSocketTransport transport) {
+	public WebSocketTextListenerAdapter(final WebSocketTransport transport) {
 		if (transport == null)
 			throw new InvalidParameterException("Transport must not be null");
 
 		_transport = transport;
 	}
 
-	public void onOpen(WebSocket webSocket) {
+	public void onOpen(final WebSocket webSocket) {
 		_transport.onOpen();
 	}
 
-	public void onClose(WebSocket webSocket) {
+	public void onClose(final WebSocket webSocket) {
 		_transport.onClose();
 	}
 
-	public void onFragment(String fragment, boolean last) {
+	public void onFragment(final String fragment, final boolean last) {
 	}
 
-	public void onMessage(String message) {
+	public void onMessage(final String message) {
 		_transport.onMessage(message);
 	}
 
-	public void onError(Throwable throwable) {
+	public void onError(final Throwable throwable) {
 		_transport.onError(throwable);
 	}
 }

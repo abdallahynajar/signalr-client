@@ -29,7 +29,7 @@ public final class ContinuationFuture<I, O> implements Future<O> {
 
 	private final Function<? super I, ? extends O> _function;
 
-	public ContinuationFuture(Future<I> future, Function<? super I, ? extends O> function) {
+	public ContinuationFuture(final Future<I> future, final Function<? super I, ? extends O> function) {
 		if (future == null)
 			throw new InvalidParameterException("Future must not be null");
 
@@ -41,7 +41,7 @@ public final class ContinuationFuture<I, O> implements Future<O> {
 	}
 
 	@Override
-	public boolean cancel(boolean mayInterruptIfRunning) {
+	public boolean cancel(final boolean mayInterruptIfRunning) {
 		return _future.cancel(mayInterruptIfRunning);
 	}
 
@@ -57,22 +57,22 @@ public final class ContinuationFuture<I, O> implements Future<O> {
 
 	@Override
 	public O get() throws InterruptedException, ExecutionException {
-		I input = _future.get();
+		final I input = _future.get();
 
 		try {
 			return _function.invoke(input);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new ExecutionException(e);
 		}
 	}
 
 	@Override
-	public O get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-		I input = _future.get(timeout, unit);
+	public O get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+		final I input = _future.get(timeout, unit);
 
 		try {
 			return _function.invoke(input);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new ExecutionException(e);
 		}
 	}

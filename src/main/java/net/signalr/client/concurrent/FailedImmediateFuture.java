@@ -27,7 +27,7 @@ public final class FailedImmediateFuture<V> implements Future<V> {
 
 	private final Throwable _cause;
 
-	public FailedImmediateFuture(Throwable cause) {
+	public FailedImmediateFuture(final Throwable cause) {
 		if (cause == null)
 			throw new InvalidParameterException("Throwable must not be null");
 
@@ -35,7 +35,7 @@ public final class FailedImmediateFuture<V> implements Future<V> {
 	}
 
 	@Override
-	public boolean cancel(boolean mayInterruptIfRunning) {
+	public boolean cancel(final boolean mayInterruptIfRunning) {
 		return false;
 	}
 
@@ -55,7 +55,7 @@ public final class FailedImmediateFuture<V> implements Future<V> {
 	}
 
 	@Override
-	public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+	public V get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 		throw new ExecutionException(_cause);
 	}
 }

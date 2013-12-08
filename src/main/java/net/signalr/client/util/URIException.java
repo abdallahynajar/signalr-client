@@ -29,7 +29,7 @@ public final class URIException extends RuntimeException {
 	 */
 	private static final long serialVersionUID = 4177222748879553738L;
 
-	public URIException(Throwable cause) {
+	public URIException(final Throwable cause) {
 		super(cause);
 	}
 }

@@ -21,11 +21,13 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
 import com.ning.http.client.FluentStringsMap;
 import com.ning.http.client.Response;
+import com.ning.http.client.websocket.WebSocket;
 import com.ning.http.client.websocket.WebSocketUpgradeHandler;
 
 import net.signalr.client.Connection;
@@ -43,45 +45,65 @@ public final class WebSocketTransport extends AbstractTransport {
 
 	private final AsyncHttpClient _client;
 
+	private WebSocket _webSocket;
+
 	/**
 	 * Initializes a new instance of the <code>WebSocketTransport</code> class.
 	 */
 	public WebSocketTransport() {
 		_client = new AsyncHttpClient();
+
+		_webSocket = null;
 	}
 
-	private Future<?> connect(Connection connection, String connectionData, boolean reconnect) {
-		URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), reconnect ? "reconnect" : "connect");
-		String schema = uriBuilder.getSchema().equals("https") ? "wss" : "ws";
+	private Future<?> connect(final Connection connection, final String connectionData, final boolean reconnect) {
+		final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), reconnect ? "reconnect" : "connect");
+		final String schema = uriBuilder.getSchema().equals("https") ? "wss" : "ws";
 
 		uriBuilder.setSchema(schema);
-		BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
+		final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
 
 		// Add headers.
-		Map<String, Collection<String>> headers = connection.getHeaders();
+		final Map<String, Collection<String>> headers = connection.getHeaders();
 
 		boundRequestBuilder.setHeaders(headers);
 
 		// Add query parameters.
-		Map<String, Collection<String>> parameters = connection.getQueryParameters();
+		final Map<String, Collection<String>> parameters = connection.getQueryParameters();
 
 		boundRequestBuilder.setQueryParameters(new FluentStringsMap(parameters));
-		String connectionToken = connection.getConnectionToken();
+		final String connectionToken = connection.getConnectionToken();
 
 		boundRequestBuilder.addQueryParameter("connectionToken", connectionToken);
 		boundRequestBuilder.addQueryParameter("connectionData", connectionData);
-		String transport = getName();
+		final String transport = getName();
 
 		boundRequestBuilder.addQueryParameter("transport", transport);
-		WebSocketUpgradeHandler.Builder builder = new WebSocketUpgradeHandler.Builder();
+		final WebSocketUpgradeHandler.Builder builder = new WebSocketUpgradeHandler.Builder();
 
 		builder.addWebSocketListener(new WebSocketTextListenerAdapter(this));
 
 		try {
-			return boundRequestBuilder.execute(builder.build());
-		} catch (IOException e) {
+			final Future<WebSocket> webSocketFuture = boundRequestBuilder.execute(builder.build());
+
+			return Futures.continueWith(webSocketFuture, new Function<WebSocket, Void>() {
+				@Override
+				public Void invoke(final WebSocket webSocket) throws Exception {
+					setWebSocket(webSocket);
+					return null;
+				}
+			});
+
+		} catch (final IOException e) {
 			return Futures.failed(e);
 		}
+	}
+
+	private void setWebSocket(WebSocket webSocket) {
+		if (_webSocket != null)
+			_webSocket.close();
+
+		_webSocket = webSocket;
 	}
 
 	@Override
@@ -90,31 +112,31 @@ public final class WebSocketTransport extends AbstractTransport {
 	}
 
 	@Override
-	public Future<String> negotiate(final Connection connection, String connectionData) {
-		URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "negotiate");
-		BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
+	public Future<String> negotiate(final Connection connection, final String connectionData) {
+		final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "negotiate");
+		final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
 
 		// Add headers.
-		Map<String, Collection<String>> headers = connection.getHeaders();
+		final Map<String, Collection<String>> headers = connection.getHeaders();
 
 		boundRequestBuilder.setHeaders(headers);
 
 		// Add query parameters.
-		Map<String, Collection<String>> parameters = connection.getQueryParameters();
+		final Map<String, Collection<String>> parameters = connection.getQueryParameters();
 
 		boundRequestBuilder.setQueryParameters(new FluentStringsMap(parameters));
-		String protocol = connection.getProtocol();
+		final String protocol = connection.getProtocol();
 
 		boundRequestBuilder.addQueryParameter("clientProtocol", protocol);
 		boundRequestBuilder.addQueryParameter("connectionData", connectionData);
 
 		try {
-			Future<Response> negotiate = boundRequestBuilder.execute();
+			final Future<Response> responseFuture = boundRequestBuilder.execute();
 
-			return Futures.continueWith(negotiate, new Function<Response, String>() {
+			return Futures.continueWith(responseFuture, new Function<Response, String>() {
 				@Override
-				public String invoke(Response response) throws Exception {
-					int statusCode = response.getStatusCode();
+				public String invoke(final Response response) throws Exception {
+					final int statusCode = response.getStatusCode();
 
 					if (statusCode != 200)
 						throw new IllegalStateException("Negotiate failed: " + statusCode + " " + response.getStatusText());
@@ -122,51 +144,60 @@ public final class WebSocketTransport extends AbstractTransport {
 					return response.getResponseBody();
 				}
 			});
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return Futures.failed(e);
 		}
 	}
 
 	@Override
-	public Future<?> start(Connection connection, String connectionData) {
+	public Future<?> start(final Connection connection, final String connectionData) {
 		return connect(connection, connectionData, false);
 	}
 
 	@Override
-	public Future<?> send(Connection connection, String connectionData, String data) {
-		// TODO Auto-generated method stub
-		return null;
+	public Future<?> send(final Connection connection, final String connectionData, final String data) {
+		final WebSocket webSocket = _webSocket;
+
+		if (webSocket == null)
+			return Futures.failed(new IllegalStateException("Not connected"));
+
+		return new FutureTask<Void>(new Runnable() {
+			@Override
+			public void run() {
+				webSocket.sendTextMessage(data);
+			}
+		}, null);
 	}
 
 	@Override
-	public Future<?> abort(Connection connection, String connectionData) {
-		URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "abort");
-		BoundRequestBuilder boundRequestBuilder = _client.preparePost(uriBuilder.toString());
+	public Future<?> abort(final Connection connection, final String connectionData) {
+		final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "abort");
+		final BoundRequestBuilder boundRequestBuilder = _client.preparePost(uriBuilder.toString());
 
 		// Add headers.
-		Map<String, Collection<String>> headers = connection.getHeaders();
+		final Map<String, Collection<String>> headers = connection.getHeaders();
 
 		boundRequestBuilder.setHeaders(headers);
 
 		// Add query parameters.
-		Map<String, Collection<String>> parameters = connection.getQueryParameters();
+		final Map<String, Collection<String>> parameters = connection.getQueryParameters();
 
 		boundRequestBuilder.setQueryParameters(new FluentStringsMap(parameters));
-		String connectionToken = connection.getConnectionToken();
+		final String connectionToken = connection.getConnectionToken();
 
 		boundRequestBuilder.addQueryParameter("connectionToken", connectionToken);
 		boundRequestBuilder.addQueryParameter("connectionData", connectionData);
-		String transport = getName();
+		final String transport = getName();
 
 		boundRequestBuilder.addQueryParameter("transport", transport);
 
 		try {
-			Future<Response> negotiate = boundRequestBuilder.execute();
+			final Future<Response> responseFuture = boundRequestBuilder.execute();
 
-			return Futures.continueWith(negotiate, new Function<Response, String>() {
+			return Futures.continueWith(responseFuture, new Function<Response, String>() {
 				@Override
-				public String invoke(Response response) throws Exception {
-					int statusCode = response.getStatusCode();
+				public String invoke(final Response response) throws Exception {
+					final int statusCode = response.getStatusCode();
 
 					if (statusCode != 200)
 						throw new IllegalStateException("Abort failed: " + statusCode + " " + response.getStatusText());
@@ -174,7 +205,7 @@ public final class WebSocketTransport extends AbstractTransport {
 					return response.getResponseBody();
 				}
 			});
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return Futures.failed(e);
 		}
 	}

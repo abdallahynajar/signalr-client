@@ -42,29 +42,29 @@ public final class URIBuilder {
 
 	private String _fragment;
 
-	public URIBuilder(String uri) {
+	public URIBuilder(final String uri) {
 		this(toURI(uri));
 	}
 
-	public URIBuilder(URI uri) {
+	public URIBuilder(final URI uri) {
 		if (uri == null)
 			throw new InvalidParameterException("URI must not be null");
 
 		init(uri);
 	}
 
-	public URIBuilder(String uri, String path) {
+	public URIBuilder(final String uri, final String path) {
 		this(toURI(uri), path);
 	}
 
-	public URIBuilder(URI uri, String path) {
+	public URIBuilder(final URI uri, final String path) {
 		if (uri == null)
 			throw new InvalidParameterException("URI must not be null");
 
 		init(uri.resolve(path));
 	}
 
-	private void init(URI uri) {
+	private void init(final URI uri) {
 		_schema = uri.getScheme();
 		_userInfo = uri.getUserInfo();
 		_host = uri.getHost();
@@ -74,7 +74,7 @@ public final class URIBuilder {
 		_fragment = uri.getFragment();
 	}
 
-	private static URI toURI(String uri) {
+	private static URI toURI(final String uri) {
 		try {
 			return new URI(uri);
 		} catch (URISyntaxException e) {
@@ -86,7 +86,7 @@ public final class URIBuilder {
 		return _schema;
 	}
 
-	public void setSchema(String schema) {
+	public void setSchema(final String schema) {
 		_schema = schema;
 	}
 
@@ -94,7 +94,7 @@ public final class URIBuilder {
 		return _host;
 	}
 
-	public void setHost(String host) {
+	public void setHost(final String host) {
 		_host = host;
 	}
 
@@ -102,7 +102,7 @@ public final class URIBuilder {
 		return _port;
 	}
 
-	public void setPort(int port) {
+	public void setPort(final int port) {
 		_port = port;
 	}
 
@@ -110,7 +110,7 @@ public final class URIBuilder {
 		return _path;
 	}
 
-	public void setPath(String path) {
+	public void setPath(final String path) {
 		_path = path;
 	}
 
@@ -118,7 +118,7 @@ public final class URIBuilder {
 		return _query;
 	}
 
-	public void setQuery(String query) {
+	public void setQuery(final String query) {
 		_query = query;
 	}
 
@@ -126,7 +126,7 @@ public final class URIBuilder {
 		return _fragment;
 	}
 
-	public void setFragment(String fragment) {
+	public void setFragment(final String fragment) {
 		_fragment = fragment;
 	}
 

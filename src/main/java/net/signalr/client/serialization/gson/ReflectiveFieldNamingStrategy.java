@@ -26,8 +26,8 @@ import com.google.gson.FieldNamingStrategy;
 
 public final class ReflectiveFieldNamingStrategy implements FieldNamingStrategy {
 
-	public String translateName(Field field) {
-		Name name = field.getAnnotation(Name.class);
+	public String translateName(final Field field) {
+		final Name name = field.getAnnotation(Name.class);
 
 		if (name == null)
 			throw new SerializationException("Name annotation is missing");

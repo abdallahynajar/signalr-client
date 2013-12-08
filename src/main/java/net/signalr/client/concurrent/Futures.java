@@ -25,7 +25,7 @@ public final class Futures {
 		return immediate(null);
 	}
 
-	public static <V> Future<V> immediate(V value) {
+	public static <V> Future<V> immediate(final V value) {
 		return new ImmediateFuture<V>(value);
 	}
 
@@ -33,7 +33,7 @@ public final class Futures {
 		return new CancelledImmediateFuture<V>();
 	}
 
-	public static <V> Future<V> failed(Throwable cause) {
+	public static <V> Future<V> failed(final Throwable cause) {
 		return new FailedImmediateFuture<V>(cause);
 	}
 

@@ -27,20 +27,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class AbstractTransport implements Transport {
 
-	private CopyOnWriteArrayList<TransportListener> _listeners;
+	private final CopyOnWriteArrayList<TransportListener> _listeners;
 
 	public AbstractTransport() {
 		_listeners = new CopyOnWriteArrayList<TransportListener>();
 	}
 
-	public void addTransportListener(TransportListener listener) {
+	public void addTransportListener(final TransportListener listener) {
 		if (listener == null)
 			throw new InvalidParameterException("Listener must not be null");
 
 		_listeners.add(listener);
 	}
 
-	public void removeTransportListener(TransportListener listener) {
+	public void removeTransportListener(final TransportListener listener) {
 		if (listener == null)
 			throw new InvalidParameterException("Listener must not be null");
 
@@ -48,25 +48,25 @@ public abstract class AbstractTransport implements Transport {
 	}
 
 	public void onOpen() {
-		for (TransportListener listener : _listeners) {
+		for (final TransportListener listener : _listeners) {
 			listener.onOpen(this);
 		}
 	}
 
 	public void onClose() {
-		for (TransportListener listener : _listeners) {
+		for (final TransportListener listener : _listeners) {
 			listener.onClose(this);
 		}
 	}
 
-	public void onMessage(String message) {
-		for (TransportListener listener : _listeners) {
+	public void onMessage(final String message) {
+		for (final TransportListener listener : _listeners) {
 			listener.onMessage(this, message);
 		}
 	}
 
-	public void onError(Throwable throwable) {
-		for (TransportListener listener : _listeners) {
+	public void onError(final Throwable throwable) {
+		for (final TransportListener listener : _listeners) {
 			listener.onError(this, throwable);
 		}
 	}

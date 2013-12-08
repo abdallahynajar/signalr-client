@@ -26,7 +26,7 @@ import java.util.concurrent.TimeoutException;
 public final class CancelledImmediateFuture<V> implements Future<V> {
 
 	@Override
-	public boolean cancel(boolean mayInterruptIfRunning) {
+	public boolean cancel(final boolean mayInterruptIfRunning) {
 		return true;
 	}
 
@@ -46,7 +46,7 @@ public final class CancelledImmediateFuture<V> implements Future<V> {
 	}
 
 	@Override
-	public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+	public V get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 		throw new CancellationException();
 	}
 }

@@ -21,15 +21,15 @@ import java.util.concurrent.Future;
 
 public final class HubProxyImpl implements HubProxy {
 
-	public HubProxyImpl(HubConnection connection, String hubName) {
+	public HubProxyImpl(final HubConnection connection, final String hubName) {
 	}
 
-	public <T> Future<T> invoke(String method, Object... args) {
+	public <T> Future<T> invoke(final String method, final Object... args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void subscribe(String eventName, HubListener listener) {
+	public void subscribe(final String eventName, final HubListener listener) {
 		// TODO Auto-generated method stub
 	}
 }

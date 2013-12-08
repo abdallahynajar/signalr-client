@@ -24,11 +24,11 @@ public final class SerializationException extends RuntimeException {
 	 */
 	private static final long serialVersionUID = -4454146458602222646L;
 
-	public SerializationException(String message) {
+	public SerializationException(final String message) {
 		super(message);
 	}
 
-	public SerializationException(Throwable cause) {
+	public SerializationException(final Throwable cause) {
 		super(cause);
 	}
 }

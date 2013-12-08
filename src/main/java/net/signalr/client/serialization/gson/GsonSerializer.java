@@ -42,7 +42,7 @@ public final class GsonSerializer implements Serializer {
 		return gsonBuilder.create();
 	}
 
-	public <T> String serialize(T graph) {
+	public <T> String serialize(final T graph) {
 		try {
 			return _gson.toJson(graph);
 		} catch (Exception e) {
@@ -50,7 +50,7 @@ public final class GsonSerializer implements Serializer {
 		}
 	}
 
-	public <T> T deserialize(String data, Class<T> clazz) {
+	public <T> T deserialize(final String data, final Class<T> clazz) {
 		try {
 			return _gson.fromJson(data, clazz);
 		} catch (Exception e) {

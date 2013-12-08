@@ -18,7 +18,7 @@
 package net.signalr.client.serialization;
 
 public interface Serializer {
-	<T> String serialize(T graph);
+	<T> String serialize(final T graph);
 
 	<T> T deserialize(String data, Class<T> clazz);
 }

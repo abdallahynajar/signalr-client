@@ -24,7 +24,7 @@ public final class HubException extends RuntimeException {
 	 */
 	private static final long serialVersionUID = 2962258989233090645L;
 
-	public HubException(String message) {
+	public HubException(final String message) {
 		super(message);
 	}
 }

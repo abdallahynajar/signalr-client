@@ -15,16 +15,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client;
+package net.signalr.client.json;
 
-public class ConnectionException extends RuntimeException {
+public interface JsonReader {
 
-	/**
-	 * The serial version unique identifier.
-	 */
-	private static final long serialVersionUID = 893447697043309452L;
-
-	public ConnectionException(final Throwable cause) {
-		super(cause);
-	}
 }
