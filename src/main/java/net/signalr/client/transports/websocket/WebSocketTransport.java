@@ -61,7 +61,7 @@ public final class WebSocketTransport extends AbstractTransport {
 		uriBuilder.setSchema(schema);
 		final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
 
-		// Add query parameters.
+		// Set query parameters.
 		final Map<String, Collection<String>> parameters = connection.getQueryParameters();
 
 		boundRequestBuilder.setQueryParameters(new FluentStringsMap(parameters));
@@ -73,7 +73,7 @@ public final class WebSocketTransport extends AbstractTransport {
 
 		boundRequestBuilder.addQueryParameter("transport", transport);
 
-		// Add headers.
+		// Set headers.
 		final Map<String, Collection<String>> headers = connection.getHeaders();
 
 		boundRequestBuilder.setHeaders(headers);
@@ -93,7 +93,6 @@ public final class WebSocketTransport extends AbstractTransport {
 					return null;
 				}
 			});
-
 		} catch (final IOException e) {
 			return Futures.failed(e);
 		}
@@ -116,7 +115,7 @@ public final class WebSocketTransport extends AbstractTransport {
 		final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "negotiate");
 		final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
 
-		// Add query parameters.
+		// Set query parameters.
 		final Map<String, Collection<String>> parameters = connection.getQueryParameters();
 
 		boundRequestBuilder.setQueryParameters(new FluentStringsMap(parameters));
@@ -125,7 +124,7 @@ public final class WebSocketTransport extends AbstractTransport {
 		boundRequestBuilder.addQueryParameter("clientProtocol", protocol);
 		boundRequestBuilder.addQueryParameter("connectionData", connectionData);
 
-		// Add headers.
+		// Set headers.
 		final Map<String, Collection<String>> headers = connection.getHeaders();
 
 		boundRequestBuilder.setHeaders(headers);
@@ -176,7 +175,7 @@ public final class WebSocketTransport extends AbstractTransport {
 		final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "abort");
 		final BoundRequestBuilder boundRequestBuilder = _client.preparePost(uriBuilder.toString());
 
-		// Add query parameters.
+		// Set query parameters.
 		final Map<String, Collection<String>> parameters = connection.getQueryParameters();
 
 		boundRequestBuilder.setQueryParameters(new FluentStringsMap(parameters));
@@ -188,12 +187,12 @@ public final class WebSocketTransport extends AbstractTransport {
 
 		boundRequestBuilder.addQueryParameter("transport", transport);
 
-		// Add headers.
+		// Set headers.
 		final Map<String, Collection<String>> headers = connection.getHeaders();
 
 		boundRequestBuilder.setHeaders(headers);
 
-		// Add body.
+		// Set body.
 		boundRequestBuilder.setBody(new byte[0]);
 
 		try {
