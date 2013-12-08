@@ -39,7 +39,7 @@ public final class HubResponse {
 	 * The ID of the operation.
 	 */
 	@Name("I")
-	private String _id;
+	private String _callbackId;
 
 	/**
 	 * Indicates whether the error is a <code>HubException</code>.
