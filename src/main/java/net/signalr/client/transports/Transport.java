@@ -45,5 +45,5 @@ public interface Transport {
 
 	Future<?> send(Connection connection, String connectionData, String data);
 
-	void abort(Connection connection, long timeout, String connectionData);
+	Future<?> abort(Connection connection, String connectionData);
 }

@@ -15,25 +15,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.transports;
+package net.signalr.client;
 
-/**
- * Represents a transport exception.
- * 
- * @author mtamme
- */
-public final class TransportException extends RuntimeException {
+public class ConnectionException extends RuntimeException {
 
 	/**
 	 * The serial version unique identifier.
 	 */
-	private static final long serialVersionUID = -5016633109345235457L;
+	private static final long serialVersionUID = 893447697043309452L;
 
-	public TransportException(String message) {
-		super(message);
-	}
-
-	public TransportException(Throwable cause) {
+	public ConnectionException(Throwable cause) {
 		super(cause);
 	}
 }

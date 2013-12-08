@@ -32,7 +32,6 @@ import net.signalr.client.Connection;
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Futures;
 import net.signalr.client.transports.AbstractTransport;
-import net.signalr.client.transports.TransportException;
 import net.signalr.client.util.URIBuilder;
 
 /**
@@ -74,15 +73,14 @@ public final class WebSocketTransport extends AbstractTransport {
 		String transport = getName();
 
 		boundRequestBuilder.addQueryParameter("transport", transport);
+		WebSocketUpgradeHandler.Builder builder = new WebSocketUpgradeHandler.Builder();
+
+		builder.addWebSocketListener(new WebSocketTextListenerAdapter(this));
 
 		try {
-			WebSocketUpgradeHandler.Builder builder = new WebSocketUpgradeHandler.Builder();
-
-			builder.addWebSocketListener(new WebSocketTextListenerAdapter(this));
-
 			return boundRequestBuilder.execute(builder.build());
 		} catch (IOException e) {
-			throw new TransportException(e);
+			return Futures.failed(e);
 		}
 	}
 
@@ -115,22 +113,17 @@ public final class WebSocketTransport extends AbstractTransport {
 
 			return Futures.continueWith(negotiate, new Function<Response, String>() {
 				@Override
-				public String invoke(Response response) {
+				public String invoke(Response response) throws Exception {
 					int statusCode = response.getStatusCode();
-					
+
 					if (statusCode != 200)
-						throw new TransportException("Negotiate failed: " + statusCode + " " + response.getStatusText());
-					
-					try {
-						return response.getResponseBody();
-					} catch (IOException e) {
-						throw new TransportException(e);
-					}
+						throw new IllegalStateException("Negotiate failed: " + statusCode + " " + response.getStatusText());
+
+					return response.getResponseBody();
 				}
 			});
-
 		} catch (IOException e) {
-			throw new TransportException(e);
+			return Futures.failed(e);
 		}
 	}
 
@@ -146,7 +139,43 @@ public final class WebSocketTransport extends AbstractTransport {
 	}
 
 	@Override
-	public void abort(Connection connection, long timeout, String connectionData) {
-		// TODO Auto-generated method stub
+	public Future<?> abort(Connection connection, String connectionData) {
+		URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "abort");
+		BoundRequestBuilder boundRequestBuilder = _client.preparePost(uriBuilder.toString());
+
+		// Add headers.
+		Map<String, Collection<String>> headers = connection.getHeaders();
+
+		boundRequestBuilder.setHeaders(headers);
+
+		// Add query parameters.
+		Map<String, Collection<String>> parameters = connection.getQueryParameters();
+
+		boundRequestBuilder.setQueryParameters(new FluentStringsMap(parameters));
+		String connectionToken = connection.getConnectionToken();
+
+		boundRequestBuilder.addQueryParameter("connectionToken", connectionToken);
+		boundRequestBuilder.addQueryParameter("connectionData", connectionData);
+		String transport = getName();
+
+		boundRequestBuilder.addQueryParameter("transport", transport);
+
+		try {
+			Future<Response> negotiate = boundRequestBuilder.execute();
+
+			return Futures.continueWith(negotiate, new Function<Response, String>() {
+				@Override
+				public String invoke(Response response) throws Exception {
+					int statusCode = response.getStatusCode();
+
+					if (statusCode != 200)
+						throw new IllegalStateException("Abort failed: " + statusCode + " " + response.getStatusText());
+
+					return response.getResponseBody();
+				}
+			});
+		} catch (IOException e) {
+			return Futures.failed(e);
+		}
 	}
 }

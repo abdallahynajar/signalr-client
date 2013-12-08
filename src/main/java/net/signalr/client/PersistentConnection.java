@@ -23,6 +23,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Futures;
@@ -33,7 +35,7 @@ public class PersistentConnection implements Connection {
 
 	private static final String PROTOCOL = "1.3";
 
-	private static final long DEFAULT_ABORT_TIMEOUT = 30 * 1000;
+	private static final long DEFAULT_ABORT_TIMEOUT = 30;
 
 	private final String _url;
 
@@ -48,11 +50,11 @@ public class PersistentConnection implements Connection {
 	private String _protocol;
 
 	private String _connectionId;
-	
+
 	private String _connectionToken;
-	
+
 	private String _connectionData;
-	
+
 	private double _disconnectTimeout;
 
 	public PersistentConnection(String url, Transport transport, Serializer serializer) {
@@ -134,7 +136,7 @@ public class PersistentConnection implements Connection {
 
 		_connectionToken = connectionToken;
 	}
-	
+
 	public String getConnectionData() {
 		return _connectionData;
 	}
@@ -152,27 +154,35 @@ public class PersistentConnection implements Connection {
 
 	public Future<?> start(ConnectionListener listener) {
 		final String connectionData = null;
-		Future<String> negotiate = _transport.negotiate(this, connectionData);
-		
-		return Futures.continueWith(negotiate, new Function<String, Void>() {
+		Future<String> negotiateFuture = _transport.negotiate(this, connectionData);
+
+		return Futures.continueWith(negotiateFuture, new Function<String, Void>() {
 			@Override
 			public Void invoke(String data) {
 				Serializer serializer = PersistentConnection.this.getSerializer();
 				NegotiationResponse negotiationResponse = serializer.deserialize(data, NegotiationResponse.class);
-				
+
 				_connectionId = negotiationResponse.getConnectionId();
 				_connectionToken = negotiationResponse.getConnectionToken();
 				_disconnectTimeout = negotiationResponse.getDisconnectTimeout();
-				
+
 				_transport.start(PersistentConnection.this, connectionData);
-				
+
 				return null;
 			}
 		});
 	}
 
 	public void stop() {
-		_transport.abort(this, DEFAULT_ABORT_TIMEOUT, _connectionData);
+		Future<?> abortFuture = _transport.abort(this, _connectionData);
+
+		try {
+			abortFuture.get(DEFAULT_ABORT_TIMEOUT, TimeUnit.SECONDS);
+		} catch (TimeoutException e) {
+			abortFuture.cancel(true);
+		} catch (Exception e) {
+			throw new ConnectionException(e);
+		}
 	}
 
 	public Future<?> send(String data) {

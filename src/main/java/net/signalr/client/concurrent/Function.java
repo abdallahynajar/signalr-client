@@ -26,5 +26,5 @@ package net.signalr.client.concurrent;
  * @param <O> The output type.
  */
 public interface Function<I, O> {
-	O invoke(I input);
+	O invoke(I input) throws Exception;
 }

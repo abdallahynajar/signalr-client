@@ -59,13 +59,21 @@ public final class ContinuationFuture<I, O> implements Future<O> {
 	public O get() throws InterruptedException, ExecutionException {
 		I input = _future.get();
 
-		return _function.invoke(input);
+		try {
+			return _function.invoke(input);
+		} catch (Exception e) {
+			throw new ExecutionException(e);
+		}
 	}
 
 	@Override
 	public O get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 		I input = _future.get(timeout, unit);
 
-		return _function.invoke(input);
+		try {
+			return _function.invoke(input);
+		} catch (Exception e) {
+			throw new ExecutionException(e);
+		}
 	}
 }
