@@ -40,12 +40,12 @@ public abstract class AbstractTransport implements Transport {
 		_listener.onClose(this);
 	}
 
-	public void onError(Throwable throwable) {
-		_listener.onError(this, throwable);
-	}
-
 	public void onMessage(String message) {
 		_listener.onMessage(message);
+	}
+
+	public void onError(Throwable throwable) {
+		_listener.onError(this, throwable);
 	}
 
 	public void setTransportListener(TransportListener listener) {

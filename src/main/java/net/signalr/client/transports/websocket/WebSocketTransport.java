@@ -73,7 +73,6 @@ public final class WebSocketTransport extends AbstractTransport {
 
 		boundRequestBuilder.addQueryParameter("connectionToken", connectionToken);
 		boundRequestBuilder.addQueryParameter("connectionData", connectionData);
-		boundRequestBuilder.addQueryParameter("tid", "7");
 		String transport = getName();
 
 		boundRequestBuilder.addQueryParameter("transport", transport);

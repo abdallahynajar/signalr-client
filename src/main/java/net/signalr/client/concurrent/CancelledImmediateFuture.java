@@ -17,33 +17,36 @@
 
 package net.signalr.client.concurrent;
 
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
-public final class Futures {
+public final class CancelledImmediateFuture<V> implements Future<V> {
 
-	public static Future<?> empty() {
-		return immediate(null);
+	@Override
+	public boolean cancel(boolean mayInterruptIfRunning) {
+		return true;
 	}
 
-	public static <V> Future<V> immediate(V value) {
-		return new ImmediateFuture<V>(value);
+	@Override
+	public boolean isCancelled() {
+		return true;
 	}
 
-	public static <V> Future<V> cancelled() {
-		return new CancelledImmediateFuture<V>();
+	@Override
+	public boolean isDone() {
+		return false;
 	}
 
-	public static <V> Future<V> failed(Throwable cause) {
-		return new FailedImmediateFuture<V>(cause);
+	@Override
+	public V get() throws InterruptedException, ExecutionException {
+		throw new CancellationException();
 	}
 
-	public static <I, O> Future<O> continueWith(final Future<I> future, final Function<? super I, ? extends O> function) {
-		return new ContinuationFuture<I, O>(future, function);
-	}
-
-	public static <I, O> Future<O> continueWith(final Future<I> future, final AsyncFunction<? super I, ? extends O> function) {
-		// TODO Auto-generated method stub
-
-		return null;
+	@Override
+	public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+		throw new CancellationException();
 	}
 }
