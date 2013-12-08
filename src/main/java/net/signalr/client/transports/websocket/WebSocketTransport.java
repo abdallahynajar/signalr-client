@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
-
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
 import com.ning.http.client.FluentStringsMap;
@@ -33,6 +31,7 @@ import com.ning.http.client.websocket.WebSocketUpgradeHandler;
 import net.signalr.client.Connection;
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Futures;
+import net.signalr.client.concurrent.ImmediateFuture;
 import net.signalr.client.transports.AbstractTransport;
 import net.signalr.client.util.URIBuilder;
 
@@ -98,9 +97,9 @@ public final class WebSocketTransport extends AbstractTransport {
 			return Futures.failed(e);
 		}
 	}
-
+	
 	private void setWebSocket(WebSocket webSocket) {
-		if (_webSocket != null)
+		if ((_webSocket != null) && _webSocket.isOpen())
 			_webSocket.close();
 
 		_webSocket = webSocket;
@@ -158,19 +157,21 @@ public final class WebSocketTransport extends AbstractTransport {
 	public Future<?> send(final Connection connection, final String connectionData, final String data) {
 		final WebSocket webSocket = _webSocket;
 
-		if (webSocket == null)
+		if ((webSocket == null) || !webSocket.isOpen())
 			return Futures.failed(new IllegalStateException("Not connected"));
 
-		return new FutureTask<Void>(new Runnable() {
-			@Override
-			public void run() {
-				webSocket.sendTextMessage(data);
-			}
-		}, null);
+		return Futures.immediate(webSocket.sendTextMessage(data));
 	}
 
 	@Override
 	public Future<?> abort(final Connection connection, final String connectionData) {
+		final WebSocket webSocket = _webSocket;
+
+		if ((webSocket == null) || !webSocket.isOpen())
+			return Futures.failed(new IllegalStateException("Not connected"));
+		
+		webSocket.close();
+		
 		final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "abort");
 		final BoundRequestBuilder boundRequestBuilder = _client.preparePost(uriBuilder.toString());
 

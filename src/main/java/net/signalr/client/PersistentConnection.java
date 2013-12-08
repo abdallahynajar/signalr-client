@@ -155,19 +155,21 @@ public class PersistentConnection implements Connection {
 	public Future<?> start(final ConnectionListener listener) {
 		final Future<String> negotiateFuture = _transport.negotiate(this, _connectionData);
 
-		return Futures.continueWith(negotiateFuture, new Function<String, Void>() {
+		return Futures.continueWith(negotiateFuture, new Function<String, Object>() {
 			@Override
-			public Void invoke(final String data) {
+			public Object invoke(final String data) throws Exception {
 				final Serializer serializer = PersistentConnection.this.getSerializer();
 				final NegotiationResponse negotiationResponse = serializer.deserialize(data, NegotiationResponse.class);
+				
+				if (!negotiationResponse.getProtocolVersion().equals(getProtocol()))
+					throw new IllegalStateException("Invalid protocol version");
 
 				_connectionId = negotiationResponse.getConnectionId();
 				_connectionToken = negotiationResponse.getConnectionToken();
 				_disconnectTimeout = negotiationResponse.getDisconnectTimeout();
+				Future<?> startFuture = _transport.start(PersistentConnection.this, _connectionData);
 
-				_transport.start(PersistentConnection.this, _connectionData);
-
-				return null;
+				return startFuture.get();
 			}
 		});
 	}

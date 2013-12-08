@@ -37,4 +37,24 @@ public final class HubRequest {
 
 	@Name("S")
 	private Map<String, Object> _state;
+
+	public void setCallbackId(String callbackId) {
+		_callbackId = callbackId;
+	}
+
+	public void setHubName(String hubName) {
+		_hubName = hubName;
+	}
+
+	public void setMethodName(String methodName) {
+		_methodName = methodName;
+	}
+
+	public void setArguments(Object[] arguments) {
+		_arguments = arguments;
+	}
+
+	public void setState(Map<String, Object> state) {
+		_state = state;
+	}
 }
