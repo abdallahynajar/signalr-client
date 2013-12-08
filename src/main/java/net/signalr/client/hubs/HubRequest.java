@@ -21,7 +21,7 @@ import java.util.Map;
 
 import net.signalr.client.serialization.Name;
 
-public final class HubInvocation {
+public final class HubRequest {
 
 	@Name("I")
 	private String _callbackId;
