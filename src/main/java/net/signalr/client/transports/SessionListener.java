@@ -24,4 +24,6 @@ public interface SessionListener {
 	void onClose(Session session);
 
 	void onError(Session session, Throwable throwable);
+
+	void onMessage(String message);
 }
