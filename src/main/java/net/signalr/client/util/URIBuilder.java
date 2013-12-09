@@ -64,6 +64,17 @@ public final class URIBuilder {
 		init(uri.resolve(path));
 	}
 
+	private static URI toURI(final String uri) {
+		if (uri == null)
+			throw new InvalidParameterException("URI must not be null");
+
+		try {
+			return new URI(uri);
+		} catch (URISyntaxException e) {
+			throw new URIException(e);
+		}
+	}
+
 	private void init(final URI uri) {
 		_schema = uri.getScheme();
 		_userInfo = uri.getUserInfo();
@@ -72,14 +83,6 @@ public final class URIBuilder {
 		_path = uri.getPath();
 		_query = uri.getQuery();
 		_fragment = uri.getFragment();
-	}
-
-	private static URI toURI(final String uri) {
-		try {
-			return new URI(uri);
-		} catch (URISyntaxException e) {
-			throw new URIException(e);
-		}
 	}
 
 	public String getSchema() {
