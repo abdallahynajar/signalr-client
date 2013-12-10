@@ -27,47 +27,47 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class AbstractTransport implements Transport {
 
-	private final CopyOnWriteArrayList<TransportListener> _listeners;
+    private final CopyOnWriteArrayList<TransportListener> _listeners;
 
-	public AbstractTransport() {
-		_listeners = new CopyOnWriteArrayList<TransportListener>();
-	}
+    public AbstractTransport() {
+        _listeners = new CopyOnWriteArrayList<TransportListener>();
+    }
 
-	public void addTransportListener(final TransportListener listener) {
-		if (listener == null)
-			throw new InvalidParameterException("Listener must not be null");
+    public void addTransportListener(final TransportListener listener) {
+        if (listener == null)
+            throw new InvalidParameterException("Listener must not be null");
 
-		_listeners.add(listener);
-	}
+        _listeners.add(listener);
+    }
 
-	public void removeTransportListener(final TransportListener listener) {
-		if (listener == null)
-			throw new InvalidParameterException("Listener must not be null");
+    public void removeTransportListener(final TransportListener listener) {
+        if (listener == null)
+            throw new InvalidParameterException("Listener must not be null");
 
-		_listeners.remove(listener);
-	}
+        _listeners.remove(listener);
+    }
 
-	public void onOpen() {
-		for (final TransportListener listener : _listeners) {
-			listener.onOpen(this);
-		}
-	}
+    public void onOpen() {
+        for (final TransportListener listener : _listeners) {
+            listener.onOpen(this);
+        }
+    }
 
-	public void onClose() {
-		for (final TransportListener listener : _listeners) {
-			listener.onClose(this);
-		}
-	}
+    public void onClose() {
+        for (final TransportListener listener : _listeners) {
+            listener.onClose(this);
+        }
+    }
 
-	public void onMessage(final String message) {
-		for (final TransportListener listener : _listeners) {
-			listener.onMessage(this, message);
-		}
-	}
+    public void onMessage(final String message) {
+        for (final TransportListener listener : _listeners) {
+            listener.onMessage(this, message);
+        }
+    }
 
-	public void onError(final Throwable throwable) {
-		for (final TransportListener listener : _listeners) {
-			listener.onError(this, throwable);
-		}
-	}
+    public void onError(final Throwable throwable) {
+        for (final TransportListener listener : _listeners) {
+            listener.onError(this, throwable);
+        }
+    }
 }

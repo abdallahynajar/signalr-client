@@ -21,23 +21,24 @@ import java.util.concurrent.Future;
 
 public final class Futures {
 
-	public static Future<?> empty() {
-		return immediate(null);
-	}
+    public static Future<?> empty() {
+        return immediate(null);
+    }
 
-	public static <V> Future<V> immediate(final V value) {
-		return new ImmediateFuture<V>(value);
-	}
+    public static <V> Future<V> immediate(final V value) {
+        return new ImmediateFuture<V>(value);
+    }
 
-	public static <V> Future<V> cancelled() {
-		return new CancelledImmediateFuture<V>();
-	}
+    public static <V> Future<V> cancelled() {
+        return new CancelledImmediateFuture<V>();
+    }
 
-	public static <V> Future<V> failed(final Throwable cause) {
-		return new FailedImmediateFuture<V>(cause);
-	}
+    public static <V> Future<V> failed(final Throwable cause) {
+        return new FailedImmediateFuture<V>(cause);
+    }
 
-	public static <I, O> Future<O> continueWith(final Future<I> future, final Function<? super I, ? extends O> function) {
-		return new ContinuationFuture<I, O>(future, function);
-	}
+    public static <I, O> Future<O> continueWith(final Future<I> future,
+            final Function<? super I, ? extends O> function) {
+        return new ContinuationFuture<I, O>(future, function);
+    }
 }

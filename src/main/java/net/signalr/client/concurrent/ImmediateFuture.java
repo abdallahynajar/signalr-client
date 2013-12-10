@@ -21,14 +21,14 @@ import java.util.concurrent.ExecutionException;
 
 public final class ImmediateFuture<V> extends AbstractImmediateFuture<V> {
 
-	private final V _value;
+    private final V _value;
 
-	public ImmediateFuture(final V value) {
-		_value = value;
-	}
+    public ImmediateFuture(final V value) {
+        _value = value;
+    }
 
-	@Override
-	public V get() throws InterruptedException, ExecutionException {
-		return _value;
-	}
+    @Override
+    public V get() throws InterruptedException, ExecutionException {
+        return _value;
+    }
 }

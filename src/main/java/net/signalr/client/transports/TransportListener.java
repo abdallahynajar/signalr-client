@@ -24,11 +24,11 @@ package net.signalr.client.transports;
  */
 public interface TransportListener {
 
-	void onOpen(Transport transport);
+    void onOpen(Transport transport);
 
-	void onClose(Transport transport);
+    void onClose(Transport transport);
 
-	void onMessage(Transport transport, String message);
+    void onMessage(Transport transport, String message);
 
-	void onError(Transport transport, Throwable throwable);
+    void onError(Transport transport, Throwable throwable);
 }

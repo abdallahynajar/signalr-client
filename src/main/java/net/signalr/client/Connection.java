@@ -25,29 +25,29 @@ import net.signalr.client.serialization.Serializer;
 
 public interface Connection {
 
-	String getUrl();
+    String getUrl();
 
-	Map<String, Collection<String>> getHeaders();
+    Map<String, Collection<String>> getHeaders();
 
-	void addHeader(String name, String value);
+    void addHeader(String name, String value);
 
-	Map<String, Collection<String>> getQueryParameters();
+    Map<String, Collection<String>> getQueryParameters();
 
-	void addQueryParameter(String name, String value);
+    void addQueryParameter(String name, String value);
 
-	String getProtocol();
+    String getProtocol();
 
-	void setProtocol(String protocol);
+    void setProtocol(String protocol);
 
-	String getConnectionToken();
+    String getConnectionToken();
 
-	void setConnectionToken(String connectionToken);
+    void setConnectionToken(String connectionToken);
 
-	Serializer getSerializer();
+    Serializer getSerializer();
 
-	Future<?> start(ConnectionListener listener);
+    Future<?> start(ConnectionListener listener);
 
-	void stop();
+    void stop();
 
-	Future<?> send(String data);
+    Future<?> send(String data);
 }

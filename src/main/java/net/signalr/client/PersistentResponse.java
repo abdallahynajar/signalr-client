@@ -21,44 +21,44 @@ import net.signalr.client.serialization.Name;
 
 public class PersistentResponse {
 
-	@Name("C")
-	private String _messageId;
+    @Name("C")
+    private String _messageId;
 
-	@Name("S")
-	private Integer _initialize;
+    @Name("S")
+    private Integer _initialize;
 
-	@Name("D")
-	private Integer _disconnect;
+    @Name("D")
+    private Integer _disconnect;
 
-	@Name("T")
-	private Integer _reconnect;
+    @Name("T")
+    private Integer _reconnect;
 
-	@Name("G")
-	private String _groupsToken;
+    @Name("G")
+    private String _groupsToken;
 
-	@Name("L")
-	private long _longPollDelay;
+    @Name("L")
+    private long _longPollDelay;
 
-	@Name("M")
-	private Object[] _messages;
+    @Name("M")
+    private Object[] _messages;
 
-	public String getMessageId() {
-		return _messageId;
-	}
+    public String getMessageId() {
+        return _messageId;
+    }
 
-	public boolean isInitialize() {
-		return (_initialize == 1);
-	}
+    public boolean isInitialize() {
+        return (_initialize == 1);
+    }
 
-	public boolean isDisconnect() {
-		return (_disconnect == 1);
-	}
+    public boolean isDisconnect() {
+        return (_disconnect == 1);
+    }
 
-	public boolean isReconnect() {
-		return (_reconnect == 1);
-	}
+    public boolean isReconnect() {
+        return (_reconnect == 1);
+    }
 
-	public String getGroupsToken() {
-		return _groupsToken;
-	}
+    public String getGroupsToken() {
+        return _groupsToken;
+    }
 }

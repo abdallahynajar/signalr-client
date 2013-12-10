@@ -33,160 +33,172 @@ import net.signalr.client.transports.Transport;
 
 public class PersistentConnection implements Connection {
 
-	private static final String PROTOCOL = "1.3";
+    private static final String PROTOCOL = "1.3";
 
-	private static final long DEFAULT_ABORT_TIMEOUT = 30;
+    private static final long DEFAULT_ABORT_TIMEOUT = 30;
 
-	private final String _url;
+    private final String _url;
 
-	private final Transport _transport;
+    private final Transport _transport;
 
-	private final Map<String, Collection<String>> _headers;
+    private final Map<String, Collection<String>> _headers;
 
-	private final Map<String, Collection<String>> _queryParameters;
+    private final Map<String, Collection<String>> _queryParameters;
 
-	private final Serializer _serializer;
+    private final Serializer _serializer;
 
-	private String _protocol;
+    private String _protocol;
 
-	private String _connectionId;
+    private String _connectionId;
 
-	private String _connectionToken;
+    private String _connectionToken;
 
-	private String _connectionData;
+    private String _connectionData;
 
-	private double _disconnectTimeout;
+    private double _disconnectTimeout;
 
-	public PersistentConnection(final String url, final Transport transport, final Serializer serializer) {
-		if (url == null)
-			throw new InvalidParameterException("URL must not be null");
+    public PersistentConnection(final String url, final Transport transport,
+            final Serializer serializer) {
+        if (url == null)
+            throw new InvalidParameterException("URL must not be null");
 
-		if (transport == null)
-			throw new InvalidParameterException("Transport must not be null");
+        if (transport == null)
+            throw new InvalidParameterException("Transport must not be null");
 
-		if (serializer == null)
-			throw new InvalidParameterException("Serializer must not be null");
+        if (serializer == null)
+            throw new InvalidParameterException("Serializer must not be null");
 
-		_url = url;
-		_transport = transport;
-		_serializer = serializer;
+        _url = url;
+        _transport = transport;
+        _serializer = serializer;
 
-		_headers = new HashMap<String, Collection<String>>();
-		_queryParameters = new HashMap<String, Collection<String>>();
+        _headers = new HashMap<String, Collection<String>>();
+        _queryParameters = new HashMap<String, Collection<String>>();
 
-		_protocol = PROTOCOL;
-		_connectionId = null;
-		_connectionToken = null;
-		_connectionData = null;
-		_disconnectTimeout = 0.0;
-	}
+        _protocol = PROTOCOL;
+        _connectionId = null;
+        _connectionToken = null;
+        _connectionData = null;
+        _disconnectTimeout = 0.0;
+    }
 
-	public String getUrl() {
-		return _url;
-	}
+    public String getUrl() {
+        return _url;
+    }
 
-	public Map<String, Collection<String>> getHeaders() {
-		return _headers;
-	}
+    public Map<String, Collection<String>> getHeaders() {
+        return _headers;
+    }
 
-	public void addHeader(final String name, final String value) {
-		Collection<String> values = _headers.get(name);
+    public void addHeader(final String name, final String value) {
+        Collection<String> values = _headers.get(name);
 
-		if (values == null) {
-			values = new ArrayList<String>();
-			_headers.put(name, values);
-		}
+        if (values == null) {
+            values = new ArrayList<String>();
+            _headers.put(name, values);
+        }
 
-		values.add(value);
-	}
+        values.add(value);
+    }
 
-	public Map<String, Collection<String>> getQueryParameters() {
-		return _queryParameters;
-	}
+    public Map<String, Collection<String>> getQueryParameters() {
+        return _queryParameters;
+    }
 
-	public void addQueryParameter(final String name, final String value) {
-		Collection<String> values = _queryParameters.get(name);
+    public void addQueryParameter(final String name, final String value) {
+        Collection<String> values = _queryParameters.get(name);
 
-		if (values == null) {
-			values = new ArrayList<String>();
-			_queryParameters.put(name, values);
-		}
+        if (values == null) {
+            values = new ArrayList<String>();
+            _queryParameters.put(name, values);
+        }
 
-		values.add(value);
-	}
+        values.add(value);
+    }
 
-	public String getProtocol() {
-		return _protocol;
-	}
+    public String getProtocol() {
+        return _protocol;
+    }
 
-	public void setProtocol(final String protocol) {
-		if (protocol == null)
-			throw new InvalidParameterException("Protocol must not be null");
+    public void setProtocol(final String protocol) {
+        if (protocol == null)
+            throw new InvalidParameterException("Protocol must not be null");
 
-		_protocol = protocol;
-	}
+        _protocol = protocol;
+    }
 
-	public String getConnectionToken() {
-		return _connectionToken;
-	}
+    public String getConnectionToken() {
+        return _connectionToken;
+    }
 
-	public void setConnectionToken(final String connectionToken) {
-		if (connectionToken == null)
-			throw new InvalidParameterException("Connection token must not be null");
+    public void setConnectionToken(final String connectionToken) {
+        if (connectionToken == null)
+            throw new InvalidParameterException(
+                    "Connection token must not be null");
 
-		_connectionToken = connectionToken;
-	}
+        _connectionToken = connectionToken;
+    }
 
-	public String getConnectionData() {
-		return _connectionData;
-	}
+    public String getConnectionData() {
+        return _connectionData;
+    }
 
-	public void setConnectionData(final String connectionData) {
-		if (connectionData == null)
-			throw new InvalidParameterException("Connection data must not be null");
+    public void setConnectionData(final String connectionData) {
+        if (connectionData == null)
+            throw new InvalidParameterException(
+                    "Connection data must not be null");
 
-		_connectionData = connectionData;
-	}
+        _connectionData = connectionData;
+    }
 
-	public Serializer getSerializer() {
-		return _serializer;
-	}
+    public Serializer getSerializer() {
+        return _serializer;
+    }
 
-	public Future<?> start(final ConnectionListener listener) {
-		final Future<String> negotiateFuture = _transport.negotiate(this, _connectionData);
+    public Future<?> start(final ConnectionListener listener) {
+        final Future<String> negotiateFuture = _transport.negotiate(this,
+                _connectionData);
 
-		return Futures.continueWith(negotiateFuture, new Function<String, Object>() {
-			@Override
-			public Object invoke(final String data) throws Exception {
-				final Serializer serializer = PersistentConnection.this.getSerializer();
-				final NegotiationResponse negotiationResponse = serializer.deserialize(data, NegotiationResponse.class);
-				
-				if (!negotiationResponse.getProtocolVersion().equals(getProtocol()))
-					throw new IllegalStateException("Invalid protocol version");
+        return Futures.continueWith(negotiateFuture,
+                new Function<String, Object>() {
+                    @Override
+                    public Object invoke(final String data) throws Exception {
+                        final Serializer serializer = PersistentConnection.this
+                                .getSerializer();
+                        final NegotiationResponse negotiationResponse = serializer
+                                .deserialize(data, NegotiationResponse.class);
 
-				_connectionId = negotiationResponse.getConnectionId();
-				_connectionToken = negotiationResponse.getConnectionToken();
-				_disconnectTimeout = negotiationResponse.getDisconnectTimeout();
-				Future<?> startFuture = _transport.start(PersistentConnection.this, _connectionData);
+                        if (!negotiationResponse.getProtocolVersion().equals(
+                                getProtocol()))
+                            throw new IllegalStateException(
+                                    "Invalid protocol version");
 
-				return startFuture.get();
-			}
-		});
-	}
+                        _connectionId = negotiationResponse.getConnectionId();
+                        _connectionToken = negotiationResponse
+                                .getConnectionToken();
+                        _disconnectTimeout = negotiationResponse
+                                .getDisconnectTimeout();
+                        Future<?> startFuture = _transport.start(
+                                PersistentConnection.this, _connectionData);
 
-	public void stop() {
-		final Future<?> abortFuture = _transport.abort(this, _connectionData);
+                        return startFuture.get();
+                    }
+                });
+    }
 
-		try {
-			abortFuture.get(DEFAULT_ABORT_TIMEOUT, TimeUnit.SECONDS);
-		} catch (final TimeoutException e) {
-			abortFuture.cancel(true);
-		} catch (final Exception e) {
-			throw new ConnectionException(e);
-		}
-	}
+    public void stop() {
+        final Future<?> abortFuture = _transport.abort(this, _connectionData);
 
-	public Future<?> send(final String data) {
-		return _transport.send(this, _connectionData, data);
-	}
+        try {
+            abortFuture.get(DEFAULT_ABORT_TIMEOUT, TimeUnit.SECONDS);
+        } catch (final TimeoutException e) {
+            abortFuture.cancel(true);
+        } catch (final Exception e) {
+            throw new ConnectionException(e);
+        }
+    }
+
+    public Future<?> send(final String data) {
+        return _transport.send(this, _connectionData, data);
+    }
 }

@@ -22,33 +22,34 @@ import java.security.InvalidParameterException;
 import com.ning.http.client.websocket.WebSocket;
 import com.ning.http.client.websocket.WebSocketTextListener;
 
-public final class WebSocketTextListenerAdapter implements WebSocketTextListener {
+public final class WebSocketTextListenerAdapter implements
+        WebSocketTextListener {
 
-	private final WebSocketTransport _transport;
+    private final WebSocketTransport _transport;
 
-	public WebSocketTextListenerAdapter(final WebSocketTransport transport) {
-		if (transport == null)
-			throw new InvalidParameterException("Transport must not be null");
+    public WebSocketTextListenerAdapter(final WebSocketTransport transport) {
+        if (transport == null)
+            throw new InvalidParameterException("Transport must not be null");
 
-		_transport = transport;
-	}
+        _transport = transport;
+    }
 
-	public void onOpen(final WebSocket webSocket) {
-		_transport.onOpen();
-	}
+    public void onOpen(final WebSocket webSocket) {
+        _transport.onOpen();
+    }
 
-	public void onClose(final WebSocket webSocket) {
-		_transport.onClose();
-	}
+    public void onClose(final WebSocket webSocket) {
+        _transport.onClose();
+    }
 
-	public void onFragment(final String fragment, final boolean last) {
-	}
+    public void onFragment(final String fragment, final boolean last) {
+    }
 
-	public void onMessage(final String message) {
-		_transport.onMessage(message);
-	}
+    public void onMessage(final String message) {
+        _transport.onMessage(message);
+    }
 
-	public void onError(final Throwable throwable) {
-		_transport.onError(throwable);
-	}
+    public void onError(final Throwable throwable) {
+        _transport.onError(throwable);
+    }
 }

@@ -26,30 +26,30 @@ import org.junit.Test;
 
 public final class HubResponseTests {
 
-	private Serializer _serializer;
+    private Serializer _serializer;
 
-	@Before
-	public void setUp() {
-		_serializer = new GsonSerializer();
-	}
+    @Before
+    public void setUp() {
+        _serializer = new GsonSerializer();
+    }
 
-	@Test
-	public void deserializeCallbackIdResponseTest() {
-		String data = "{\"I\":\"1\"}";
+    @Test
+    public void deserializeCallbackIdResponseTest() {
+        String data = "{\"I\":\"1\"}";
 
-		HubResponse response = _serializer.deserialize(data, HubResponse.class);
+        HubResponse response = _serializer.deserialize(data, HubResponse.class);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals("1", response.getCallbackId());
-	}
+        Assert.assertNotNull(response);
+        Assert.assertEquals("1", response.getCallbackId());
+    }
 
-	@Test
-	public void deserializeMessageResponseTest() {
-		String data = "{\"C\":\"s-0,298F690\",\"M\":[]}";
+    @Test
+    public void deserializeMessageResponseTest() {
+        String data = "{\"C\":\"s-0,298F690\",\"M\":[]}";
 
-		HubResponse response = _serializer.deserialize(data, HubResponse.class);
+        HubResponse response = _serializer.deserialize(data, HubResponse.class);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals("s-0,298F690", response.getMessageId());
-	}
+        Assert.assertNotNull(response);
+        Assert.assertEquals("s-0,298F690", response.getMessageId());
+    }
 }

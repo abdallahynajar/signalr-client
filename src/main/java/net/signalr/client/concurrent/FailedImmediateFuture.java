@@ -22,17 +22,17 @@ import java.util.concurrent.ExecutionException;
 
 public final class FailedImmediateFuture<V> extends AbstractImmediateFuture<V> {
 
-	private final Throwable _cause;
+    private final Throwable _cause;
 
-	public FailedImmediateFuture(final Throwable cause) {
-		if (cause == null)
-			throw new InvalidParameterException("Throwable must not be null");
+    public FailedImmediateFuture(final Throwable cause) {
+        if (cause == null)
+            throw new InvalidParameterException("Throwable must not be null");
 
-		_cause = cause;
-	}
+        _cause = cause;
+    }
 
-	@Override
-	public V get() throws InterruptedException, ExecutionException {
-		throw new ExecutionException(_cause);
-	}
+    @Override
+    public V get() throws InterruptedException, ExecutionException {
+        throw new ExecutionException(_cause);
+    }
 }

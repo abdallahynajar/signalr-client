@@ -24,12 +24,12 @@ package net.signalr.client.util;
  */
 public final class URIException extends RuntimeException {
 
-	/**
-	 * The serial version unique identifier.
-	 */
-	private static final long serialVersionUID = 4177222748879553738L;
+    /**
+     * The serial version unique identifier.
+     */
+    private static final long serialVersionUID = 4177222748879553738L;
 
-	public URIException(final Throwable cause) {
-		super(cause);
-	}
+    public URIException(final Throwable cause) {
+        super(cause);
+    }
 }

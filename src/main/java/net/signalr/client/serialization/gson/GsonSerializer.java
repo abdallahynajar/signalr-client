@@ -27,34 +27,34 @@ import com.google.gson.GsonBuilder;
 
 public final class GsonSerializer implements Serializer {
 
-	private final Gson _gson;
+    private final Gson _gson;
 
-	public GsonSerializer() {
-		_gson = build();
-	}
+    public GsonSerializer() {
+        _gson = build();
+    }
 
-	private static Gson build() {
-		GsonBuilder gsonBuilder = new GsonBuilder();
+    private static Gson build() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
 
-		gsonBuilder.excludeFieldsWithModifiers(Modifier.STATIC);
-		gsonBuilder.setFieldNamingStrategy(new ReflectiveFieldNamingStrategy());
+        gsonBuilder.excludeFieldsWithModifiers(Modifier.STATIC);
+        gsonBuilder.setFieldNamingStrategy(new ReflectiveFieldNamingStrategy());
 
-		return gsonBuilder.create();
-	}
+        return gsonBuilder.create();
+    }
 
-	public <T> String serialize(final T graph) {
-		try {
-			return _gson.toJson(graph);
-		} catch (Exception e) {
-			throw new SerializationException(e);
-		}
-	}
+    public <T> String serialize(final T graph) {
+        try {
+            return _gson.toJson(graph);
+        } catch (Exception e) {
+            throw new SerializationException(e);
+        }
+    }
 
-	public <T> T deserialize(final String data, final Class<T> clazz) {
-		try {
-			return _gson.fromJson(data, clazz);
-		} catch (Exception e) {
-			throw new SerializationException(e);
-		}
-	}
+    public <T> T deserialize(final String data, final Class<T> clazz) {
+        try {
+            return _gson.fromJson(data, clazz);
+        } catch (Exception e) {
+            throw new SerializationException(e);
+        }
+    }
 }

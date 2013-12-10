@@ -19,13 +19,13 @@ package net.signalr.client;
 
 public interface ConnectionListener {
 
-	void onReceived(Connection connection, String data);
+    void onReceived(Connection connection, String data);
 
-	void onError(Connection connection, Throwable throwable);
+    void onError(Connection connection, Throwable throwable);
 
-	void onReconnecting(Connection connection);
+    void onReconnecting(Connection connection);
 
-	void onReconnected(Connection connection);
+    void onReconnected(Connection connection);
 
-	void onConnectionSlow(Connection connection);
+    void onConnectionSlow(Connection connection);
 }

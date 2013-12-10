@@ -18,5 +18,5 @@
 package net.signalr.client.hubs;
 
 public interface HubListener {
-	void onReceived(String data);
+    void onReceived(String data);
 }

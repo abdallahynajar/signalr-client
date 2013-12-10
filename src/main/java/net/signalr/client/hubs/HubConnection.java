@@ -24,19 +24,20 @@ import net.signalr.client.transports.Transport;
 
 public final class HubConnection extends PersistentConnection {
 
-	public HubConnection(final String url, final Transport transport, final Serializer serializer) {
-		super(url, transport, serializer);
-	}
+    public HubConnection(final String url, final Transport transport,
+            final Serializer serializer) {
+        super(url, transport, serializer);
+    }
 
-	public HubProxy createHubProxy(final String hubName) {
-		return new HubProxyImpl(this, hubName);
-	}
+    public HubProxy createHubProxy(final String hubName) {
+        return new HubProxyImpl(this, hubName);
+    }
 
-	public String registerCallback(final Function<HubResponse, Void> callback) {
-		return null;
-	}
+    public String registerCallback(final Function<HubResponse, Void> callback) {
+        return null;
+    }
 
-	public void removeCallback(final String callbackId) {
+    public void removeCallback(final String callbackId) {
 
-	}
+    }
 }

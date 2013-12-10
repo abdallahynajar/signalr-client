@@ -19,16 +19,16 @@ package net.signalr.client.serialization;
 
 public final class SerializationException extends RuntimeException {
 
-	/**
-	 * The serial version unique identifier.
-	 */
-	private static final long serialVersionUID = -4454146458602222646L;
+    /**
+     * The serial version unique identifier.
+     */
+    private static final long serialVersionUID = -4454146458602222646L;
 
-	public SerializationException(final String message) {
-		super(message);
-	}
+    public SerializationException(final String message) {
+        super(message);
+    }
 
-	public SerializationException(final Throwable cause) {
-		super(cause);
-	}
+    public SerializationException(final Throwable cause) {
+        super(cause);
+    }
 }

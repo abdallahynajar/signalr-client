@@ -22,9 +22,9 @@ import java.util.concurrent.Future;
 
 public interface Session extends Closeable {
 
-	String getConnectionData();
+    String getConnectionData();
 
-	String getConnectionToken();
+    String getConnectionToken();
 
-	Future<Void> send(String message);
+    Future<Void> send(String message);
 }

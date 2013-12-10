@@ -26,59 +26,59 @@ import net.signalr.client.serialization.Name;
  */
 public final class NegotiationResponse {
 
-	@Name("Url")
-	private String _url;
+    @Name("Url")
+    private String _url;
 
-	@Name("ConnectionToken")
-	private String _connectionToken;
+    @Name("ConnectionToken")
+    private String _connectionToken;
 
-	@Name("ConnectionId")
-	private String _connectionId;
+    @Name("ConnectionId")
+    private String _connectionId;
 
-	@Name("ProtocolVersion")
-	private String _protocolVersion;
+    @Name("ProtocolVersion")
+    private String _protocolVersion;
 
-	@Name("TryWebSockets")
-	private boolean _tryWebSockets;
+    @Name("TryWebSockets")
+    private boolean _tryWebSockets;
 
-	@Name("KeepAliveTimeout")
-	private Double _keepAliveTimeout;
+    @Name("KeepAliveTimeout")
+    private Double _keepAliveTimeout;
 
-	@Name("DisconnectTimeout")
-	private double _disconnectTimeout;
+    @Name("DisconnectTimeout")
+    private double _disconnectTimeout;
 
-	@Name("TransportConnectTimeout")
-	private double _transportConnectTimeout;
+    @Name("TransportConnectTimeout")
+    private double _transportConnectTimeout;
 
-	public String getUrl() {
-		return _url;
-	}
+    public String getUrl() {
+        return _url;
+    }
 
-	public String getConnectionToken() {
-		return _connectionToken;
-	}
+    public String getConnectionToken() {
+        return _connectionToken;
+    }
 
-	public String getConnectionId() {
-		return _connectionId;
-	}
+    public String getConnectionId() {
+        return _connectionId;
+    }
 
-	public String getProtocolVersion() {
-		return _protocolVersion;
-	}
+    public String getProtocolVersion() {
+        return _protocolVersion;
+    }
 
-	public boolean getTryWebSockets() {
-		return _tryWebSockets;
-	}
+    public boolean getTryWebSockets() {
+        return _tryWebSockets;
+    }
 
-	public double getDisconnectTimeout() {
-		return _disconnectTimeout;
-	}
+    public double getDisconnectTimeout() {
+        return _disconnectTimeout;
+    }
 
-	public Double getKeepAliveTimeout() {
-		return _keepAliveTimeout;
-	}
+    public Double getKeepAliveTimeout() {
+        return _keepAliveTimeout;
+    }
 
-	public double getTransportConnectTimeout() {
-		return _transportConnectTimeout;
-	}
+    public double getTransportConnectTimeout() {
+        return _transportConnectTimeout;
+    }
 }

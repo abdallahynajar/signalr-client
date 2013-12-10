@@ -26,5 +26,5 @@ import java.lang.annotation.ElementType;
 @Target(ElementType.FIELD)
 public @interface Name {
 
-	String value();
+    String value();
 }

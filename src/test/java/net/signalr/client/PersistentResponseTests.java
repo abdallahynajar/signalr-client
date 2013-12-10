@@ -26,34 +26,37 @@ import org.junit.Test;
 
 public final class PersistentResponseTests {
 
-	private Serializer _serializer;
+    private Serializer _serializer;
 
-	@Before
-	public void setUp() {
-		_serializer = new GsonSerializer();
-	}
+    @Before
+    public void setUp() {
+        _serializer = new GsonSerializer();
+    }
 
-	@Test
-	public void deserializeInitializationResponseTest() {
-		String data = "{\"C\":\"s-0,298F386\",\"S\":1,\"M\":[]}";
+    @Test
+    public void deserializeInitializationResponseTest() {
+        String data = "{\"C\":\"s-0,298F386\",\"S\":1,\"M\":[]}";
 
-		PersistentResponse response = _serializer.deserialize(data, PersistentResponse.class);
+        PersistentResponse response = _serializer.deserialize(data,
+                PersistentResponse.class);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals("s-0,298F386", response.getMessageId());
-		Assert.assertEquals(true, response.isInitialize());
-	}
+        Assert.assertNotNull(response);
+        Assert.assertEquals("s-0,298F386", response.getMessageId());
+        Assert.assertEquals(true, response.isInitialize());
+    }
 
-	@Test
-	public void deserializeGroupTokenResponseTest() {
-		String data = "{\"C\":\"s-0,298F388\",\"G\":\"jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=\",\"M\":[]}";
+    @Test
+    public void deserializeGroupTokenResponseTest() {
+        String data = "{\"C\":\"s-0,298F388\",\"G\":\"jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=\",\"M\":[]}";
 
-		PersistentResponse response = _serializer.deserialize(data, PersistentResponse.class);
+        PersistentResponse response = _serializer.deserialize(data,
+                PersistentResponse.class);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals("s-0,298F388", response.getMessageId());
-		Assert.assertEquals(false, response.isInitialize());
-		Assert.assertEquals("jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=",
-				response.getGroupsToken());
-	}
+        Assert.assertNotNull(response);
+        Assert.assertEquals("s-0,298F388", response.getMessageId());
+        Assert.assertEquals(false, response.isInitialize());
+        Assert.assertEquals(
+                "jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=",
+                response.getGroupsToken());
+    }
 }

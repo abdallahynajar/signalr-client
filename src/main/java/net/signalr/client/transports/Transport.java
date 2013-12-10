@@ -28,22 +28,22 @@ import net.signalr.client.Connection;
  */
 public interface Transport {
 
-	/**
-	 * Returns the transport name.
-	 * 
-	 * @return the transport name.
-	 */
-	String getName();
+    /**
+     * Returns the transport name.
+     * 
+     * @return the transport name.
+     */
+    String getName();
 
-	void addTransportListener(TransportListener listener);
+    void addTransportListener(TransportListener listener);
 
-	void removeTransportListener(TransportListener listener);
+    void removeTransportListener(TransportListener listener);
 
-	Future<String> negotiate(Connection connection, String connectionData);
+    Future<String> negotiate(Connection connection, String connectionData);
 
-	Future<?> start(Connection connection, String connectionData);
+    Future<?> start(Connection connection, String connectionData);
 
-	Future<?> send(Connection connection, String connectionData, String data);
+    Future<?> send(Connection connection, String connectionData, String data);
 
-	Future<?> abort(Connection connection, String connectionData);
+    Future<?> abort(Connection connection, String connectionData);
 }

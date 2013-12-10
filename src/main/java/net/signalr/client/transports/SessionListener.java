@@ -19,11 +19,11 @@ package net.signalr.client.transports;
 
 public interface SessionListener {
 
-	void onOpen(Session session);
+    void onOpen(Session session);
 
-	void onClose(Session session);
+    void onClose(Session session);
 
-	void onError(Session session, Throwable throwable);
+    void onError(Session session, Throwable throwable);
 
-	void onMessage(String message);
+    void onMessage(String message);
 }

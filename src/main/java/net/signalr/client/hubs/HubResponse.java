@@ -23,57 +23,57 @@ import net.signalr.client.serialization.Name;
 
 public final class HubResponse {
 
-	/**
-	 * The changes made the the round tripped state.
-	 */
-	@Name("S")
-	private Map<String, Object> _state;
+    /**
+     * The changes made the the round tripped state.
+     */
+    @Name("S")
+    private Map<String, Object> _state;
 
-	/**
-	 * The result of the invocation.
-	 */
-	@Name("R")
-	private Object _result;
+    /**
+     * The result of the invocation.
+     */
+    @Name("R")
+    private Object _result;
 
-	/**
-	 * The ID of the operation.
-	 */
-	@Name("I")
-	private String _callbackId;
+    /**
+     * The ID of the operation.
+     */
+    @Name("I")
+    private String _callbackId;
 
-	/**
-	 * Indicates whether the error is a <code>HubException</code>.
-	 */
-	@Name("H")
-	private Boolean _isHubException;
+    /**
+     * Indicates whether the error is a <code>HubException</code>.
+     */
+    @Name("H")
+    private Boolean _isHubException;
 
-	/**
-	 * The exception that occurs as a result of invoking the hub method.
-	 */
-	@Name("E")
-	private String _error;
+    /**
+     * The exception that occurs as a result of invoking the hub method.
+     */
+    @Name("E")
+    private String _error;
 
-	/**
-	 * The stack trace of the exception that occurs as a result of invoking the
-	 * hub method.
-	 */
-	@Name("T")
-	private String _stackTrace;
+    /**
+     * The stack trace of the exception that occurs as a result of invoking the
+     * hub method.
+     */
+    @Name("T")
+    private String _stackTrace;
 
-	/**
-	 * Extra error data contained in the <code>HubException</code>.
-	 */
-	@Name("D")
-	private String _errorData;
-	
-	@Name("C")
-	private String _messageId;
-	
-	public String getCallbackId() {
-		return _callbackId;
-	}
-	
-	public String getMessageId() {
-		return _messageId;
-	}
+    /**
+     * Extra error data contained in the <code>HubException</code>.
+     */
+    @Name("D")
+    private String _errorData;
+
+    @Name("C")
+    private String _messageId;
+
+    public String getCallbackId() {
+        return _callbackId;
+    }
+
+    public String getMessageId() {
+        return _messageId;
+    }
 }

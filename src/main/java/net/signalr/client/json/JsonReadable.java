@@ -18,5 +18,5 @@
 package net.signalr.client.json;
 
 public interface JsonReadable {
-	void readJson(JsonReader reader);
+    void readJson(JsonReader reader);
 }

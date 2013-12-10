@@ -18,5 +18,5 @@
 package net.signalr.client.json;
 
 public interface JsonWriteable {
-	void writeJson(JsonWriter writer);
+    void writeJson(JsonWriter writer);
 }

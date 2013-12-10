@@ -28,123 +28,124 @@ import java.security.InvalidParameterException;
  */
 public final class URIBuilder {
 
-	private String _schema;
+    private String _schema;
 
-	private String _userInfo;
+    private String _userInfo;
 
-	private String _host;
+    private String _host;
 
-	private int _port;
+    private int _port;
 
-	private String _path;
+    private String _path;
 
-	private String _query;
+    private String _query;
 
-	private String _fragment;
+    private String _fragment;
 
-	public URIBuilder(final String uri) {
-		this(toURI(uri));
-	}
+    public URIBuilder(final String uri) {
+        this(toURI(uri));
+    }
 
-	public URIBuilder(final URI uri) {
-		if (uri == null)
-			throw new InvalidParameterException("URI must not be null");
+    public URIBuilder(final URI uri) {
+        if (uri == null)
+            throw new InvalidParameterException("URI must not be null");
 
-		init(uri);
-	}
+        init(uri);
+    }
 
-	public URIBuilder(final String uri, final String path) {
-		this(toURI(uri), path);
-	}
+    public URIBuilder(final String uri, final String path) {
+        this(toURI(uri), path);
+    }
 
-	public URIBuilder(final URI uri, final String path) {
-		if (uri == null)
-			throw new InvalidParameterException("URI must not be null");
+    public URIBuilder(final URI uri, final String path) {
+        if (uri == null)
+            throw new InvalidParameterException("URI must not be null");
 
-		init(uri.resolve(path));
-	}
+        init(uri.resolve(path));
+    }
 
-	private static URI toURI(final String uri) {
-		if (uri == null)
-			throw new InvalidParameterException("URI must not be null");
+    private static URI toURI(final String uri) {
+        if (uri == null)
+            throw new InvalidParameterException("URI must not be null");
 
-		try {
-			return new URI(uri);
-		} catch (URISyntaxException e) {
-			throw new URIException(e);
-		}
-	}
+        try {
+            return new URI(uri);
+        } catch (URISyntaxException e) {
+            throw new URIException(e);
+        }
+    }
 
-	private void init(final URI uri) {
-		_schema = uri.getScheme();
-		_userInfo = uri.getUserInfo();
-		_host = uri.getHost();
-		_port = uri.getPort();
-		_path = uri.getPath();
-		_query = uri.getQuery();
-		_fragment = uri.getFragment();
-	}
+    private void init(final URI uri) {
+        _schema = uri.getScheme();
+        _userInfo = uri.getUserInfo();
+        _host = uri.getHost();
+        _port = uri.getPort();
+        _path = uri.getPath();
+        _query = uri.getQuery();
+        _fragment = uri.getFragment();
+    }
 
-	public String getSchema() {
-		return _schema;
-	}
+    public String getSchema() {
+        return _schema;
+    }
 
-	public void setSchema(final String schema) {
-		_schema = schema;
-	}
+    public void setSchema(final String schema) {
+        _schema = schema;
+    }
 
-	public String getHost() {
-		return _host;
-	}
+    public String getHost() {
+        return _host;
+    }
 
-	public void setHost(final String host) {
-		_host = host;
-	}
+    public void setHost(final String host) {
+        _host = host;
+    }
 
-	public int getPort() {
-		return _port;
-	}
+    public int getPort() {
+        return _port;
+    }
 
-	public void setPort(final int port) {
-		_port = port;
-	}
+    public void setPort(final int port) {
+        _port = port;
+    }
 
-	public String getPath() {
-		return _path;
-	}
+    public String getPath() {
+        return _path;
+    }
 
-	public void setPath(final String path) {
-		_path = path;
-	}
+    public void setPath(final String path) {
+        _path = path;
+    }
 
-	public String getQuery() {
-		return _query;
-	}
+    public String getQuery() {
+        return _query;
+    }
 
-	public void setQuery(final String query) {
-		_query = query;
-	}
+    public void setQuery(final String query) {
+        _query = query;
+    }
 
-	public String getFragment() {
-		return _fragment;
-	}
+    public String getFragment() {
+        return _fragment;
+    }
 
-	public void setFragment(final String fragment) {
-		_fragment = fragment;
-	}
+    public void setFragment(final String fragment) {
+        _fragment = fragment;
+    }
 
-	public URI toURI() {
-		try {
-			return new URI(_schema, _userInfo, _host, _port, _path, _query, _fragment);
-		} catch (URISyntaxException e) {
-			throw new URIException(e);
-		}
-	}
+    public URI toURI() {
+        try {
+            return new URI(_schema, _userInfo, _host, _port, _path, _query,
+                    _fragment);
+        } catch (URISyntaxException e) {
+            throw new URIException(e);
+        }
+    }
 
-	@Override
-	public String toString() {
-		URI uri = toURI();
+    @Override
+    public String toString() {
+        URI uri = toURI();
 
-		return uri.toString();
-	}
+        return uri.toString();
+    }
 }

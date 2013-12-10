@@ -19,12 +19,12 @@ package net.signalr.client;
 
 public class ConnectionException extends RuntimeException {
 
-	/**
-	 * The serial version unique identifier.
-	 */
-	private static final long serialVersionUID = 893447697043309452L;
+    /**
+     * The serial version unique identifier.
+     */
+    private static final long serialVersionUID = 893447697043309452L;
 
-	public ConnectionException(final Throwable cause) {
-		super(cause);
-	}
+    public ConnectionException(final Throwable cause) {
+        super(cause);
+    }
 }

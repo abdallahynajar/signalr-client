@@ -23,38 +23,38 @@ import net.signalr.client.serialization.Name;
 
 public final class HubRequest {
 
-	@Name("I")
-	private String _callbackId;
+    @Name("I")
+    private String _callbackId;
 
-	@Name("H")
-	private String _hubName;
+    @Name("H")
+    private String _hubName;
 
-	@Name("M")
-	private String _methodName;
+    @Name("M")
+    private String _methodName;
 
-	@Name("A")
-	private Object[] _arguments;
+    @Name("A")
+    private Object[] _arguments;
 
-	@Name("S")
-	private Map<String, Object> _state;
+    @Name("S")
+    private Map<String, Object> _state;
 
-	public void setCallbackId(String callbackId) {
-		_callbackId = callbackId;
-	}
+    public void setCallbackId(String callbackId) {
+        _callbackId = callbackId;
+    }
 
-	public void setHubName(String hubName) {
-		_hubName = hubName;
-	}
+    public void setHubName(String hubName) {
+        _hubName = hubName;
+    }
 
-	public void setMethodName(String methodName) {
-		_methodName = methodName;
-	}
+    public void setMethodName(String methodName) {
+        _methodName = methodName;
+    }
 
-	public void setArguments(Object[] arguments) {
-		_arguments = arguments;
-	}
+    public void setArguments(Object[] arguments) {
+        _arguments = arguments;
+    }
 
-	public void setState(Map<String, Object> state) {
-		_state = state;
-	}
+    public void setState(Map<String, Object> state) {
+        _state = state;
+    }
 }
