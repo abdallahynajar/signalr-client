@@ -20,8 +20,7 @@ package net.signalr.client.concurrent;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
-public final class CancelledImmediateFuture<V> extends
-        AbstractImmediateFuture<V> {
+public final class CancelledImmediateFuture<V> extends AbstractImmediateFuture<V> {
 
     @Override
     public boolean cancel(final boolean mayInterruptIfRunning) {

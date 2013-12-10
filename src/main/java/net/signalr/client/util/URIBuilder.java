@@ -135,8 +135,7 @@ public final class URIBuilder {
 
     public URI toURI() {
         try {
-            return new URI(_schema, _userInfo, _host, _port, _path, _query,
-                    _fragment);
+            return new URI(_schema, _userInfo, _host, _port, _path, _query, _fragment);
         } catch (URISyntaxException e) {
             throw new URIException(e);
         }

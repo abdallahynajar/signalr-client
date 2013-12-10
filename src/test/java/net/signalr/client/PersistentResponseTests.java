@@ -37,8 +37,7 @@ public final class PersistentResponseTests {
     public void deserializeInitializationResponseTest() {
         String data = "{\"C\":\"s-0,298F386\",\"S\":1,\"M\":[]}";
 
-        PersistentResponse response = _serializer.deserialize(data,
-                PersistentResponse.class);
+        PersistentResponse response = _serializer.deserialize(data, PersistentResponse.class);
 
         Assert.assertNotNull(response);
         Assert.assertEquals("s-0,298F386", response.getMessageId());
@@ -49,14 +48,12 @@ public final class PersistentResponseTests {
     public void deserializeGroupTokenResponseTest() {
         String data = "{\"C\":\"s-0,298F388\",\"G\":\"jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=\",\"M\":[]}";
 
-        PersistentResponse response = _serializer.deserialize(data,
-                PersistentResponse.class);
+        PersistentResponse response = _serializer.deserialize(data, PersistentResponse.class);
 
         Assert.assertNotNull(response);
         Assert.assertEquals("s-0,298F388", response.getMessageId());
         Assert.assertEquals(false, response.isInitialize());
-        Assert.assertEquals(
-                "jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=",
+        Assert.assertEquals("jFN2mJ5rvg9vPfwkBxM1YlE6xggh6C+h+RfCKioW0uJpH0vg3bL40vD2e4p8Ncr4vsrTxzqDKN7zBqCUclpqEgzuJRwG/mKifZrTcxdLez2DMF8ZmGTi0/N6vBju1XQVGnMj3HpOKDieWe8ifbFTL89lIFg=",
                 response.getGroupsToken());
     }
 }

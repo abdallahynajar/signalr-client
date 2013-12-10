@@ -54,27 +54,20 @@ public final class WebSocketTransport extends AbstractTransport {
         _webSocket = null;
     }
 
-    private Future<?> connect(final Connection connection,
-            final String connectionData, final boolean reconnect) {
-        final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(),
-                reconnect ? "reconnect" : "connect");
-        final String schema = uriBuilder.getSchema().equals("https") ? "wss"
-                : "ws";
+    private Future<?> connect(final Connection connection, final String connectionData, final boolean reconnect) {
+        final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), reconnect ? "reconnect" : "connect");
+        final String schema = uriBuilder.getSchema().equals("https") ? "wss" : "ws";
 
         uriBuilder.setSchema(schema);
-        final BoundRequestBuilder boundRequestBuilder = _client
-                .prepareGet(uriBuilder.toString());
+        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
 
         // Set query parameters.
-        final Map<String, Collection<String>> parameters = connection
-                .getQueryParameters();
+        final Map<String, Collection<String>> parameters = connection.getQueryParameters();
 
-        boundRequestBuilder
-                .setQueryParameters(new FluentStringsMap(parameters));
+        boundRequestBuilder.setQueryParameters(new FluentStringsMap(parameters));
         final String connectionToken = connection.getConnectionToken();
 
-        boundRequestBuilder.addQueryParameter("connectionToken",
-                connectionToken);
+        boundRequestBuilder.addQueryParameter("connectionToken", connectionToken);
         boundRequestBuilder.addQueryParameter("connectionData", connectionData);
         final String transport = getName();
 
@@ -91,18 +84,15 @@ public final class WebSocketTransport extends AbstractTransport {
         builder.addWebSocketListener(new WebSocketTextListenerAdapter(this));
 
         try {
-            final Future<WebSocket> webSocketFuture = boundRequestBuilder
-                    .execute(builder.build());
+            final Future<WebSocket> webSocketFuture = boundRequestBuilder.execute(builder.build());
 
-            return Futures.continueWith(webSocketFuture,
-                    new Function<WebSocket, Void>() {
-                        @Override
-                        public Void invoke(final WebSocket webSocket)
-                                throws Exception {
-                            setWebSocket(webSocket);
-                            return null;
-                        }
-                    });
+            return Futures.continueWith(webSocketFuture, new Function<WebSocket, Void>() {
+                @Override
+                public Void invoke(final WebSocket webSocket) throws Exception {
+                    setWebSocket(webSocket);
+                    return null;
+                }
+            });
         } catch (final IOException e) {
             return Futures.failed(e);
         }
@@ -121,19 +111,14 @@ public final class WebSocketTransport extends AbstractTransport {
     }
 
     @Override
-    public Future<String> negotiate(final Connection connection,
-            final String connectionData) {
-        final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(),
-                "negotiate");
-        final BoundRequestBuilder boundRequestBuilder = _client
-                .prepareGet(uriBuilder.toString());
+    public Future<String> negotiate(final Connection connection, final String connectionData) {
+        final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "negotiate");
+        final BoundRequestBuilder boundRequestBuilder = _client.prepareGet(uriBuilder.toString());
 
         // Set query parameters.
-        final Map<String, Collection<String>> parameters = connection
-                .getQueryParameters();
+        final Map<String, Collection<String>> parameters = connection.getQueryParameters();
 
-        boundRequestBuilder
-                .setQueryParameters(new FluentStringsMap(parameters));
+        boundRequestBuilder.setQueryParameters(new FluentStringsMap(parameters));
         final String protocol = connection.getProtocol();
 
         boundRequestBuilder.addQueryParameter("clientProtocol", protocol);
@@ -145,38 +130,31 @@ public final class WebSocketTransport extends AbstractTransport {
         boundRequestBuilder.setHeaders(headers);
 
         try {
-            final Future<Response> responseFuture = boundRequestBuilder
-                    .execute();
+            final Future<Response> responseFuture = boundRequestBuilder.execute();
 
-            return Futures.continueWith(responseFuture,
-                    new Function<Response, String>() {
-                        @Override
-                        public String invoke(final Response response)
-                                throws Exception {
-                            final int statusCode = response.getStatusCode();
+            return Futures.continueWith(responseFuture, new Function<Response, String>() {
+                @Override
+                public String invoke(final Response response) throws Exception {
+                    final int statusCode = response.getStatusCode();
 
-                            if (statusCode != 200)
-                                throw new IllegalStateException(
-                                        "Negotiate failed: " + statusCode + " "
-                                                + response.getStatusText());
+                    if (statusCode != 200)
+                        throw new IllegalStateException("Negotiate failed: " + statusCode + " " + response.getStatusText());
 
-                            return response.getResponseBody();
-                        }
-                    });
+                    return response.getResponseBody();
+                }
+            });
         } catch (final IOException e) {
             return Futures.failed(e);
         }
     }
 
     @Override
-    public Future<?> start(final Connection connection,
-            final String connectionData) {
+    public Future<?> start(final Connection connection, final String connectionData) {
         return connect(connection, connectionData, false);
     }
 
     @Override
-    public Future<?> send(final Connection connection,
-            final String connectionData, final String data) {
+    public Future<?> send(final Connection connection, final String connectionData, final String data) {
         final WebSocket webSocket = _webSocket;
 
         if ((webSocket == null) || !webSocket.isOpen())
@@ -186,8 +164,7 @@ public final class WebSocketTransport extends AbstractTransport {
     }
 
     @Override
-    public Future<?> abort(final Connection connection,
-            final String connectionData) {
+    public Future<?> abort(final Connection connection, final String connectionData) {
         final WebSocket webSocket = _webSocket;
 
         if ((webSocket == null) || !webSocket.isOpen())
@@ -195,21 +172,16 @@ public final class WebSocketTransport extends AbstractTransport {
 
         webSocket.close();
 
-        final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(),
-                "abort");
-        final BoundRequestBuilder boundRequestBuilder = _client
-                .preparePost(uriBuilder.toString());
+        final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "abort");
+        final BoundRequestBuilder boundRequestBuilder = _client.preparePost(uriBuilder.toString());
 
         // Set query parameters.
-        final Map<String, Collection<String>> parameters = connection
-                .getQueryParameters();
+        final Map<String, Collection<String>> parameters = connection.getQueryParameters();
 
-        boundRequestBuilder
-                .setQueryParameters(new FluentStringsMap(parameters));
+        boundRequestBuilder.setQueryParameters(new FluentStringsMap(parameters));
         final String connectionToken = connection.getConnectionToken();
 
-        boundRequestBuilder.addQueryParameter("connectionToken",
-                connectionToken);
+        boundRequestBuilder.addQueryParameter("connectionToken", connectionToken);
         boundRequestBuilder.addQueryParameter("connectionData", connectionData);
         final String transport = getName();
 
@@ -224,24 +196,19 @@ public final class WebSocketTransport extends AbstractTransport {
         boundRequestBuilder.setBody(new byte[0]);
 
         try {
-            final Future<Response> responseFuture = boundRequestBuilder
-                    .execute();
+            final Future<Response> responseFuture = boundRequestBuilder.execute();
 
-            return Futures.continueWith(responseFuture,
-                    new Function<Response, String>() {
-                        @Override
-                        public String invoke(final Response response)
-                                throws Exception {
-                            final int statusCode = response.getStatusCode();
+            return Futures.continueWith(responseFuture, new Function<Response, String>() {
+                @Override
+                public String invoke(final Response response) throws Exception {
+                    final int statusCode = response.getStatusCode();
 
-                            if (statusCode != 200)
-                                throw new IllegalStateException(
-                                        "Abort failed: " + statusCode + " "
-                                                + response.getStatusText());
+                    if (statusCode != 200)
+                        throw new IllegalStateException("Abort failed: " + statusCode + " " + response.getStatusText());
 
-                            return response.getResponseBody();
-                        }
-                    });
+                    return response.getResponseBody();
+                }
+            });
         } catch (final IOException e) {
             return Futures.failed(e);
         }

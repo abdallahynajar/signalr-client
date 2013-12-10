@@ -29,8 +29,7 @@ public final class ContinuationFuture<I, O> implements Future<O> {
 
     private final Function<? super I, ? extends O> _function;
 
-    public ContinuationFuture(final Future<I> future,
-            final Function<? super I, ? extends O> function) {
+    public ContinuationFuture(final Future<I> future, final Function<? super I, ? extends O> function) {
         if (future == null)
             throw new InvalidParameterException("Future must not be null");
 
@@ -68,8 +67,7 @@ public final class ContinuationFuture<I, O> implements Future<O> {
     }
 
     @Override
-    public O get(final long timeout, final TimeUnit unit)
-            throws InterruptedException, ExecutionException, TimeoutException {
+    public O get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
         final I input = _future.get(timeout, unit);
 
         try {

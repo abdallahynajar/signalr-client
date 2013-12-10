@@ -57,8 +57,7 @@ public class PersistentConnection implements Connection {
 
     private double _disconnectTimeout;
 
-    public PersistentConnection(final String url, final Transport transport,
-            final Serializer serializer) {
+    public PersistentConnection(final String url, final Transport transport, final Serializer serializer) {
         if (url == null)
             throw new InvalidParameterException("URL must not be null");
 
@@ -133,8 +132,7 @@ public class PersistentConnection implements Connection {
 
     public void setConnectionToken(final String connectionToken) {
         if (connectionToken == null)
-            throw new InvalidParameterException(
-                    "Connection token must not be null");
+            throw new InvalidParameterException("Connection token must not be null");
 
         _connectionToken = connectionToken;
     }
@@ -145,8 +143,7 @@ public class PersistentConnection implements Connection {
 
     public void setConnectionData(final String connectionData) {
         if (connectionData == null)
-            throw new InvalidParameterException(
-                    "Connection data must not be null");
+            throw new InvalidParameterException("Connection data must not be null");
 
         _connectionData = connectionData;
     }
@@ -156,34 +153,25 @@ public class PersistentConnection implements Connection {
     }
 
     public Future<?> start(final ConnectionListener listener) {
-        final Future<String> negotiateFuture = _transport.negotiate(this,
-                _connectionData);
+        final Future<String> negotiateFuture = _transport.negotiate(this, _connectionData);
 
-        return Futures.continueWith(negotiateFuture,
-                new Function<String, Object>() {
-                    @Override
-                    public Object invoke(final String data) throws Exception {
-                        final Serializer serializer = PersistentConnection.this
-                                .getSerializer();
-                        final NegotiationResponse negotiationResponse = serializer
-                                .deserialize(data, NegotiationResponse.class);
+        return Futures.continueWith(negotiateFuture, new Function<String, Object>() {
+            @Override
+            public Object invoke(final String data) throws Exception {
+                final Serializer serializer = PersistentConnection.this.getSerializer();
+                final NegotiationResponse negotiationResponse = serializer.deserialize(data, NegotiationResponse.class);
 
-                        if (!negotiationResponse.getProtocolVersion().equals(
-                                getProtocol()))
-                            throw new IllegalStateException(
-                                    "Invalid protocol version");
+                if (!negotiationResponse.getProtocolVersion().equals(getProtocol()))
+                    throw new IllegalStateException("Invalid protocol version");
 
-                        _connectionId = negotiationResponse.getConnectionId();
-                        _connectionToken = negotiationResponse
-                                .getConnectionToken();
-                        _disconnectTimeout = negotiationResponse
-                                .getDisconnectTimeout();
-                        Future<?> startFuture = _transport.start(
-                                PersistentConnection.this, _connectionData);
+                _connectionId = negotiationResponse.getConnectionId();
+                _connectionToken = negotiationResponse.getConnectionToken();
+                _disconnectTimeout = negotiationResponse.getDisconnectTimeout();
+                Future<?> startFuture = _transport.start(PersistentConnection.this, _connectionData);
 
-                        return startFuture.get();
-                    }
-                });
+                return startFuture.get();
+            }
+        });
     }
 
     public void stop() {

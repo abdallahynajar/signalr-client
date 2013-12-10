@@ -23,8 +23,7 @@ public abstract class AbstractImmediateFuture<V> implements Future<V> {
     }
 
     @Override
-    public V get(final long timeout, final TimeUnit unit)
-            throws InterruptedException, ExecutionException, TimeoutException {
+    public V get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
         return get();
     }
 }

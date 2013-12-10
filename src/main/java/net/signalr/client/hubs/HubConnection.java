@@ -24,8 +24,7 @@ import net.signalr.client.transports.Transport;
 
 public final class HubConnection extends PersistentConnection {
 
-    public HubConnection(final String url, final Transport transport,
-            final Serializer serializer) {
+    public HubConnection(final String url, final Transport transport, final Serializer serializer) {
         super(url, transport, serializer);
     }
 

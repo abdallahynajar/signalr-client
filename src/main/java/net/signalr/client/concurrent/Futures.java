@@ -37,8 +37,7 @@ public final class Futures {
         return new FailedImmediateFuture<V>(cause);
     }
 
-    public static <I, O> Future<O> continueWith(final Future<I> future,
-            final Function<? super I, ? extends O> function) {
+    public static <I, O> Future<O> continueWith(final Future<I> future, final Function<? super I, ? extends O> function) {
         return new ContinuationFuture<I, O>(future, function);
     }
 }
