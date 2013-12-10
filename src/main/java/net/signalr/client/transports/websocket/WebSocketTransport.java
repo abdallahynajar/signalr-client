@@ -193,7 +193,7 @@ public final class WebSocketTransport extends AbstractTransport {
         boundRequestBuilder.setHeaders(headers);
 
         // Set body.
-        boundRequestBuilder.setBody(new byte[0]);
+        boundRequestBuilder.setBody("");
 
         try {
             final Future<Response> responseFuture = boundRequestBuilder.execute();
