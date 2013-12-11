@@ -21,11 +21,7 @@ import java.util.concurrent.Future;
 
 public interface Session {
 
-    String getConnectionData();
-
-    String getConnectionToken();
-
     Future<Void> send(String message);
-    
+
     void close();
 }

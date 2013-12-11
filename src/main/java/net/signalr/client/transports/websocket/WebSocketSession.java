@@ -15,29 +15,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.signalr.client.concurrent;
+package net.signalr.client.transports.websocket;
 
+import java.security.InvalidParameterException;
 import java.util.concurrent.Future;
 
-public final class Futures {
+import com.ning.http.client.websocket.WebSocket;
 
-    public static Future<Void> empty() {
-        return immediate(null);
+import net.signalr.client.concurrent.Futures;
+import net.signalr.client.transports.Session;
+
+public final class WebSocketSession implements Session {
+
+    private final WebSocket _webSocket;
+
+    public WebSocketSession(WebSocket webSocket) {
+        if (webSocket == null)
+            throw new InvalidParameterException("WebSocket must not be null");
+
+        _webSocket = webSocket;
     }
 
-    public static <V> Future<V> immediate(final V value) {
-        return new ImmediateFuture<V>(value);
+    @Override
+    public Future<Void> send(String message) {
+        _webSocket.sendTextMessage(message);
+
+        return Futures.empty();
     }
 
-    public static <V> Future<V> cancelled() {
-        return new CancelledImmediateFuture<V>();
-    }
-
-    public static <V> Future<V> failed(final Throwable cause) {
-        return new FailedImmediateFuture<V>(cause);
-    }
-
-    public static <I, O> Future<O> continueWith(final Future<I> future, final Function<? super I, ? extends O> function) {
-        return new ContinuationFuture<I, O>(future, function);
+    @Override
+    public void close() {
+        _webSocket.close();
     }
 }
