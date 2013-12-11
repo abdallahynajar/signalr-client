@@ -44,7 +44,7 @@ public final class WebSocketTransport extends AbstractTransport {
     private final AsyncHttpClient _client;
 
     /**
-     * Initializes a new instance of the <code>WebSocketTransport</code> class.
+     * Initializes a new instance of the {@link WebSocketTransport} class.
      */
     public WebSocketTransport() {
         _client = new AsyncHttpClient();
