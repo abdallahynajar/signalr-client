@@ -22,8 +22,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Represents an abstract transport.
- * 
- * @author mtamme
  */
 public abstract class AbstractTransport implements Transport {
 

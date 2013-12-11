@@ -23,8 +23,6 @@ import net.signalr.client.Connection;
 
 /**
  * Defines a transport.
- * 
- * @author mtamme
  */
 public interface Transport {
 

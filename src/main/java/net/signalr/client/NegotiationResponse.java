@@ -21,8 +21,6 @@ import net.signalr.client.serialization.Name;
 
 /**
  * Represents a negotiation response.
- * 
- * @author mtamme
  */
 public final class NegotiationResponse {
 

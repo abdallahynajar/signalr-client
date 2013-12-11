@@ -23,8 +23,6 @@ import java.security.InvalidParameterException;
 
 /**
  * Represents an URI builder.
- * 
- * @author mtamme
  */
 public final class URIBuilder {
 

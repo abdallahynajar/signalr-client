@@ -20,8 +20,6 @@ package net.signalr.client.concurrent;
 /**
  * Defines a function.
  * 
- * @author mtamme
- * 
  * @param <I> The input type.
  * @param <O> The output type.
  */

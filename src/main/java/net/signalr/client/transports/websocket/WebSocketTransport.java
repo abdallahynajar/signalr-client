@@ -36,8 +36,6 @@ import net.signalr.client.util.URIBuilder;
 
 /**
  * Represents the WebSocket transport.
- * 
- * @author mtamme
  */
 public final class WebSocketTransport extends AbstractTransport {
 

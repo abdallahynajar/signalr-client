@@ -17,14 +17,15 @@
 
 package net.signalr.client.transports;
 
-import java.io.Closeable;
 import java.util.concurrent.Future;
 
-public interface Session extends Closeable {
+public interface Session {
 
     String getConnectionData();
 
     String getConnectionToken();
 
     Future<Void> send(String message);
+    
+    void close();
 }
