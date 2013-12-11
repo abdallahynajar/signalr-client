@@ -22,7 +22,7 @@ import java.security.InvalidParameterException;
 import com.ning.http.client.websocket.WebSocket;
 import com.ning.http.client.websocket.WebSocketTextListener;
 
-public final class WebSocketTextListenerAdapter implements WebSocketTextListener {
+final class WebSocketTextListenerAdapter implements WebSocketTextListener {
 
     private final WebSocketTransport _transport;
 

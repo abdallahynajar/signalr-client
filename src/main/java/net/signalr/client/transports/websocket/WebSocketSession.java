@@ -25,11 +25,11 @@ import com.ning.http.client.websocket.WebSocket;
 import net.signalr.client.concurrent.Futures;
 import net.signalr.client.transports.Session;
 
-public final class WebSocketSession implements Session {
+final class WebSocketSession implements Session {
 
     private final WebSocket _webSocket;
 
-    public WebSocketSession(WebSocket webSocket) {
+    public WebSocketSession(final WebSocket webSocket) {
         if (webSocket == null)
             throw new InvalidParameterException("WebSocket must not be null");
 
@@ -37,7 +37,7 @@ public final class WebSocketSession implements Session {
     }
 
     @Override
-    public Future<Void> send(String message) {
+    public Future<Void> send(final String message) {
         _webSocket.sendTextMessage(message);
 
         return Futures.empty();

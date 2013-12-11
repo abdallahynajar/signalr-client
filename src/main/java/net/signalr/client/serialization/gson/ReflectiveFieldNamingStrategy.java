@@ -24,7 +24,7 @@ import net.signalr.client.serialization.Name;
 
 import com.google.gson.FieldNamingStrategy;
 
-public final class ReflectiveFieldNamingStrategy implements FieldNamingStrategy {
+final class ReflectiveFieldNamingStrategy implements FieldNamingStrategy {
 
     public String translateName(final Field field) {
         final Name name = field.getAnnotation(Name.class);
