@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Future;
+
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
 import com.ning.http.client.FluentStringsMap;
@@ -32,6 +33,7 @@ import net.signalr.client.Connection;
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Futures;
 import net.signalr.client.transports.AbstractTransport;
+import net.signalr.client.transports.Session;
 import net.signalr.client.util.URIBuilder;
 
 /**
@@ -41,18 +43,14 @@ public final class WebSocketTransport extends AbstractTransport {
 
     private final AsyncHttpClient _client;
 
-    private WebSocket _webSocket;
-
     /**
      * Initializes a new instance of the <code>WebSocketTransport</code> class.
      */
     public WebSocketTransport() {
         _client = new AsyncHttpClient();
-
-        _webSocket = null;
     }
 
-    private Future<?> connect(final Connection connection, final String connectionData, final boolean reconnect) {
+    private Future<Session> connect(final Connection connection, final String connectionData, final boolean reconnect) {
         final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), reconnect ? "reconnect" : "connect");
         final String schema = uriBuilder.getSchema().equals("https") ? "wss" : "ws";
 
@@ -84,23 +82,15 @@ public final class WebSocketTransport extends AbstractTransport {
         try {
             final Future<WebSocket> webSocketFuture = boundRequestBuilder.execute(builder.build());
 
-            return Futures.continueWith(webSocketFuture, new Function<WebSocket, Void>() {
+            return Futures.continueWith(webSocketFuture, new Function<WebSocket, Session>() {
                 @Override
-                public Void invoke(final WebSocket webSocket) throws Exception {
-                    setWebSocket(webSocket);
-                    return null;
+                public Session invoke(final WebSocket webSocket) throws Exception {
+                    return new WebSocketSession(webSocket);
                 }
             });
         } catch (final IOException e) {
             return Futures.failed(e);
         }
-    }
-
-    private void setWebSocket(WebSocket webSocket) {
-        if ((_webSocket != null) && _webSocket.isOpen())
-            _webSocket.close();
-
-        _webSocket = webSocket;
     }
 
     @Override
@@ -147,29 +137,12 @@ public final class WebSocketTransport extends AbstractTransport {
     }
 
     @Override
-    public Future<?> start(final Connection connection, final String connectionData) {
+    public Future<Session> start(final Connection connection, final String connectionData) {
         return connect(connection, connectionData, false);
     }
 
     @Override
-    public Future<?> send(final Connection connection, final String connectionData, final String data) {
-        final WebSocket webSocket = _webSocket;
-
-        if ((webSocket == null) || !webSocket.isOpen())
-            return Futures.failed(new IllegalStateException("Not connected"));
-
-        return Futures.immediate(webSocket.sendTextMessage(data));
-    }
-
-    @Override
-    public Future<?> abort(final Connection connection, final String connectionData) {
-        final WebSocket webSocket = _webSocket;
-
-        if ((webSocket == null) || !webSocket.isOpen())
-            return Futures.failed(new IllegalStateException("Not connected"));
-
-        webSocket.close();
-
+    public Future<Void> abort(final Connection connection, final String connectionData) {
         final URIBuilder uriBuilder = new URIBuilder(connection.getUrl(), "abort");
         final BoundRequestBuilder boundRequestBuilder = _client.preparePost(uriBuilder.toString());
 
@@ -196,15 +169,15 @@ public final class WebSocketTransport extends AbstractTransport {
         try {
             final Future<Response> responseFuture = boundRequestBuilder.execute();
 
-            return Futures.continueWith(responseFuture, new Function<Response, String>() {
+            return Futures.continueWith(responseFuture, new Function<Response, Void>() {
                 @Override
-                public String invoke(final Response response) throws Exception {
+                public Void invoke(final Response response) throws Exception {
                     final int statusCode = response.getStatusCode();
 
                     if (statusCode != 200)
                         throw new IllegalStateException("Abort failed: " + statusCode + " " + response.getStatusText());
-
-                    return response.getResponseBody();
+                    
+                    return null;
                 }
             });
         } catch (final IOException e) {

@@ -39,9 +39,7 @@ public interface Transport {
 
     Future<String> negotiate(Connection connection, String connectionData);
 
-    Future<?> start(Connection connection, String connectionData);
+    Future<Session> start(Connection connection, String connectionData);
 
-    Future<?> send(Connection connection, String connectionData, String data);
-
-    Future<?> abort(Connection connection, String connectionData);
+    Future<Void> abort(Connection connection, String connectionData);
 }

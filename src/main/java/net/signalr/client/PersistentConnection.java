@@ -29,6 +29,7 @@ import java.util.concurrent.TimeoutException;
 import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Futures;
 import net.signalr.client.serialization.Serializer;
+import net.signalr.client.transports.Session;
 import net.signalr.client.transports.Transport;
 
 public class PersistentConnection implements Connection {
@@ -57,6 +58,8 @@ public class PersistentConnection implements Connection {
 
     private double _disconnectTimeout;
 
+    private Session _session;
+
     public PersistentConnection(final String url, final Transport transport, final Serializer serializer) {
         if (url == null)
             throw new InvalidParameterException("URL must not be null");
@@ -79,6 +82,7 @@ public class PersistentConnection implements Connection {
         _connectionToken = null;
         _connectionData = null;
         _disconnectTimeout = 0.0;
+        _session = null;
     }
 
     public String getUrl() {
@@ -152,12 +156,12 @@ public class PersistentConnection implements Connection {
         return _serializer;
     }
 
-    public Future<?> start(final ConnectionListener listener) {
+    public Future<Void> start(final ConnectionListener listener) {
         final Future<String> negotiateFuture = _transport.negotiate(this, _connectionData);
 
-        return Futures.continueWith(negotiateFuture, new Function<String, Object>() {
+        return Futures.continueWith(negotiateFuture, new Function<String, Void>() {
             @Override
-            public Object invoke(final String data) throws Exception {
+            public Void invoke(final String data) throws Exception {
                 final Serializer serializer = PersistentConnection.this.getSerializer();
                 final NegotiationResponse negotiationResponse = serializer.deserialize(data, NegotiationResponse.class);
 
@@ -167,9 +171,11 @@ public class PersistentConnection implements Connection {
                 _connectionId = negotiationResponse.getConnectionId();
                 _connectionToken = negotiationResponse.getConnectionToken();
                 _disconnectTimeout = negotiationResponse.getDisconnectTimeout();
-                Future<?> startFuture = _transport.start(PersistentConnection.this, _connectionData);
+                Future<Session> sessionFuture = _transport.start(PersistentConnection.this, _connectionData);
 
-                return startFuture.get();
+                _session = sessionFuture.get();
+
+                return null;
             }
         });
     }
@@ -187,6 +193,6 @@ public class PersistentConnection implements Connection {
     }
 
     public Future<?> send(final String data) {
-        return _transport.send(this, _connectionData, data);
+        return _session.send(data);
     }
 }
