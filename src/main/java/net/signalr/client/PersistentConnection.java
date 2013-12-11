@@ -171,9 +171,9 @@ public class PersistentConnection implements Connection {
                 _connectionId = negotiationResponse.getConnectionId();
                 _connectionToken = negotiationResponse.getConnectionToken();
                 _disconnectTimeout = negotiationResponse.getDisconnectTimeout();
-                Future<Session> sessionFuture = _transport.start(PersistentConnection.this, _connectionData);
+                Future<Session> startFuture = _transport.start(PersistentConnection.this, _connectionData);
 
-                _session = sessionFuture.get();
+                _session = startFuture.get();
 
                 return null;
             }
