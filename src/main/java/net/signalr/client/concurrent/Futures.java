@@ -37,6 +37,10 @@ public final class Futures {
         return new FailedImmediateFuture<V>(cause);
     }
 
+    public static <I, O> Future<O> create(final Function<? super I, ? extends O> function, final I input) {
+        return new FunctionFuture<I, O>(function, input);
+    }
+
     public static <I, O> Future<O> continueWith(final Future<I> future, final Function<? super I, ? extends O> function) {
         return new ContinuationFuture<I, O>(future, function);
     }

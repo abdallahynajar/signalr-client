@@ -176,7 +176,7 @@ public final class WebSocketTransport extends AbstractTransport {
 
                     if (statusCode != 200)
                         throw new IllegalStateException("Abort failed: " + statusCode + " " + response.getStatusText());
-                    
+
                     return null;
                 }
             });

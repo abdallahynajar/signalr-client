@@ -22,6 +22,7 @@ import java.util.concurrent.Future;
 
 import com.ning.http.client.websocket.WebSocket;
 
+import net.signalr.client.concurrent.Function;
 import net.signalr.client.concurrent.Futures;
 import net.signalr.client.transports.Session;
 
@@ -38,9 +39,13 @@ final class WebSocketSession implements Session {
 
     @Override
     public Future<Void> send(final String message) {
-        _webSocket.sendTextMessage(message);
-
-        return Futures.empty();
+        return Futures.create(new Function<String, Void>() {
+            @Override
+            public Void invoke(String message) throws Exception {
+                _webSocket.sendTextMessage(message);
+                return null;
+            }
+        }, null);
     }
 
     @Override
